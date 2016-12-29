@@ -22,14 +22,14 @@
         <tr class="text-c">
             {include file="td" /}
             <td class="f-14">
-                {$vo.status|show_status=$vo.id}
-                {tp:menu menu='sedit,sdelete' /}
+<!--                 {$vo.status|show_status=$vo.id}
+ -->                {tp:menu menu='sedit,sdelete' /}
             </td>
         </tr>
         {/volist}
         </tbody>
     </table>
-    <div class="page-bootstrap">{$page}</div>
+    <div class="page-bootstrap">{$list->render()}</div>
 </div>
 {/block}
 {block name='script'}}

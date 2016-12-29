@@ -99,6 +99,7 @@ class Excel
         $type = self::getType($file, $type);
         $objReader = PHPExcel_IOFactory::createReader($type);
         $objPHPExcel = $objReader->load($file);
+        
         // 数据数组
         $data = [];
         // 已导入数据计数

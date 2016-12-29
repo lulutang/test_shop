@@ -7,9 +7,11 @@
 {/tp:access}
 
 {tp:access action='forbid'}
-<a href="javascript:;" onclick="forbid_all('{:\\think\\Url::build(\'forbid\')}')" class="btn btn-warning radius ml-5"><i class="Hui-iconfont">&#xe645;</i> 批量导入</a>
+<a href="javascript:;" onclick="layer_open('上传文件','{:\\think\\Url::build(\'import\')}')" class="btn btn-warning radius ml-5"><i class="Hui-iconfont">&#xe645;</i> 批量导入</a>
 {/tp:access}
 
-{tp:access action='resume'}
-<a href="javascript:;" onclick="resume_all('{:\\think\\Url::build(\'resume\')}')" class="btn btn-success radius ml-5"><i class="Hui-iconfont">&#xe644;</i> 批量导出</a>
-{/tp:access}
+<form action="/admin/specification/export" target="_blank" method="post">
+    <button class="btn btn-success ml-5" style="margin-left:280px;margin-top:-55px" type="submit">导出Excel</button>
+</form>
+
+

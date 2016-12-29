@@ -498,6 +498,15 @@ function resume_all(url, checkbox_group) {
 }
 
 /**
+ * 导入
+ * @param url 批量恢复地址，一般为 {:url('resume')}
+ * @param checkbox_group checkbox组的名称，默认 id[]
+ */
+function export_all(url, checkbox_group) {
+    _del_export_all(url, checkbox_group || 'id[]', "您确定要导入数据吗？", "已导入！")
+}
+
+/**
  * 清空回收站
  * @param url 清空回收站地址，一般为 {:url('clear')}
  */
@@ -634,6 +643,28 @@ function _del_recycle_all(url, checkbox_group, msg, return_msg) {
     });
 }
 
+function _del_export_all(url, checkbox_group, msg, return_msg) {
+    layer.confirm(msg, {
+        btn: ['确定', '取消'],
+        title: '提示',
+        icon: 3
+    }, function () {
+        id = [];
+        $(":checked[name='" + checkbox_group + "']").each(function () {
+            id.push($(this).val())
+        });
+        $.post(url, {id: id.join(',')}, function (data) {
+            if (data.code == 0) {
+                parent.layer.msg(return_msg, {icon: 1, time: 1000});
+                window.location.reload();
+            } else {
+                layer.alert(data.msg);
+            }
+        }, 'json')
+    }, function (index) {
+        layer.close(index);
+    });
+}
 function _del_all(url, checkbox_group, msg) {
     _del_recycle_all(url, checkbox_group, msg, "已删除！")
 }

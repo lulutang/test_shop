@@ -16,7 +16,7 @@ use think\Session;
 use think\Response;
 use think\Request;
 use think\Url;
-
+use think\Db;
 /**
  * CURLFILE 兼容性处理 php < 5.5
  * 一定不要修改、删除，否则 curl 可能无法上传文件
@@ -417,4 +417,14 @@ function format_bytes($size, $delimiter = '')
     for ($i = 0; $size >= 1024 && $i < 5; $i++) $size /= 1024;
 
     return round($size, 2) . $delimiter . $units[$i];
+}
+
+function get_specification_by_id($id){
+	$list = Db::name("CategoryManagement")->field('title')->where(array('id'=>$id))->find();
+	return $list['title'];
+	
+}
+
+function import_data(){
+	
 }

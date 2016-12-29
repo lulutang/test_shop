@@ -5,8 +5,9 @@
     <div id="tab_upload" class="HuiTab">
         <div class="tabBar cl">
             <span>本地上传</span>
-            <span>网络图片</span>
-            <span>历史图片</span>
+            
+            <span>网络{$Request.param.type == 1?'文件':'图片'}</span>
+            <span>历史{$Request.param.type == 1?'文件':'图片'}</span>
         </div>
         <div class="tabCon">
             <div>
