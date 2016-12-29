@@ -1,16 +1,9 @@
 <?php
 /**
- * tpAdmin [a web admin based ThinkPHP5]
+ * 品类管理
  *
- * @author yuan1994 <tianpian0805@gmail.com>
- * @link http://tpadmin.yuan1994.com/
- * @copyright 2016 yuan1994 all rights reserved.
- * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @author tanglulu
  */
-
-//------------------------
-// 公开不授权控制器
-//-------------------------
 
 namespace app\admin\controller;
 
@@ -52,7 +45,9 @@ class Category
      */
     public function index()
     {
-    	$this->view->assign('list', array());
+    	
+    	$list = Db::name("CategoryManagement")->where(array('status' => 0))->select();
+    	$this->view->assign('list', $list);
     	 
     	$this->view->assign('page', '');
     	 
@@ -62,14 +57,104 @@ class Category
     }
 
     /**
-     * 增加菜单
+     * 增加品类
      */
    public function add()
    {
-   	  return $this->view->fetch();
+	   	if ($this->request->isAjax() && $this->request->isPost()) {
+	   		 $data = $this->request->post();
+	   		 
+	   		 $list = Db::name("CategoryManagement")->field('id')->where(array('status' => 0,'title'=>$data['name']))->find();
+	   		 if($list){
+	   		 	return ajax_return_adv('请不要重复添加', '');
+	   		 }
+	   		 // 写入数据表
+	   		
+	   		 $log['title'] = $data['name'];
+	   		 $log['admin_id'] = UID;
+	   		 $log['add_time'] = time();
+	   		 $id = Db::name("CategoryManagement")->insert($log);
+	   		 if($id){
+	   		 	return ajax_return_adv('增加成功', 'parent');
+	   		 }else{
+	   		 	return ajax_return_adv('增加失败，请重试', '');
+	   		 	
+	   		 }
+	   		 
+	   	}else{
+	   		return $this->view->fetch();
+	   		 
+	   	}
    }
 
+   /**
+    * 修改品类
+    */
+   public function edit()
+   {
+   	if ($this->request->isAjax() && $this->request->isPost()) {
+   		$data = $this->request->post();
+   		
+   		
+   		$list = Db::name("CategoryManagement")->field('id')->where(array('id' => $data['id'], 'status' => 0))->find();
+   		if(!$list){
+   			return ajax_return_adv('修改异常', '');
+   		}
+   		// 更新数据表
+   
+   		$log['title'] = $data['name'];
+   		$log['admin_id'] = UID;
+   		$log['update_time'] = time();
+   		$id = Db::name("CategoryManagement")->where(array('id' => $data['id']))->update($log);
+   		if($id){
+   			return ajax_return_adv('修改成功', 'parent','','','/admin/category/index');
+   		}else{
+   			return ajax_return_adv('修改失败，请重试', '');
+   
+   		}
+   		 
+   	}else{
+   		$id = $this->request->param('id');
+   		
+   		$list = Db::name("CategoryManagement")->field('id,title')->where(array('id' => $id))->find();
+   		$this->view->assign('vo', $list);
+   		 
+   		return $this->view->fetch();
+   		 
+   	}
+   }  
+   
+   
 
+   /**
+    * 删除品类
+    */
+   public function delete()
+   {
+   	if ($this->request->isAjax() && $this->request->isPost()) {
+   	    $data = $this->request->post();
+   		$list = Db::name("CategoryManagement")->field('id')->where(array('id' => $data['id'],'status' => 0))->find();
+   		if(!$list){
+   			return ajax_return_adv('删除异常', '');
+   		}
+   		// 更新数据表
+   
+   		$log['status'] = 1;
+   		$log['admin_id'] = UID;
+   		$log['update_time'] = time();
+   		$id = Db::name("CategoryManagement")->where(array('id' => $data['id']))->update($log);
+   		if($id){
+   			return ajax_return_adv('删除成功', 'parent');
+   		}else{
+   			return ajax_return_adv('删除失败，请重试', '');
+   
+   		}
+   
+   	}else{
+   		return $this->view->fetch();
+   
+   	}
+   }
     /**
      * 登录检测
      * @return \think\response\Json
