@@ -99,34 +99,17 @@
             <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>品类：</label>
             <div class="formControls col-xs-6 col-sm-6">
                 <div class="select-box">
-                    <select name="group_id" class="select">
+                    <select name="group_id" id="group_id" class="select">
                         <option value="0" selected="selected">请选择</option>
-                        <option value="1">系统管理</option>
-                        <option value="2">工具</option>
-                        <option value="3">菜单管理</option>
-                        <option value="4">规格管理</option>
+                        {volist name="list" id="vo"}
+                        <option value="{$vo.id}">{$vo.title}</option>
+                        {/volist}
                    </select>
                 </div>
                       
                 
-                  <ul style="margin-top:10px">
-                      <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">500ml</span></li>
-                      <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">300ml</span></li>
-                  <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">500ml</span></li>
-                      <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">300ml</span></li>
-                  <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">500ml</span></li>
-                      <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">300ml</span></li>
-                  <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">500ml</span></li>
-                      <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">300ml</span></li>
-                  <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">500ml</span></li>
-                      <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">300ml</span></li>
-                  <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">500ml</span></li>
-                      <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">300ml</span></li>
-                  <li style="margin-top:10px" style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">500ml</span></li>
-                      <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">300ml</span></li>
-                  <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">500ml</span></li>
-                      <li style="margin-top:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">300ml</span></li>
-                 
+                  <ul style="margin-top:10px" style="display:hidden" id="pinlei">
+                      
                  </ul>
             </div>
             <div class="col-xs-3 col-sm-3"></div>
@@ -212,6 +195,26 @@
             callback: function (ret) {
                 ajax_progress(ret);
             }
+        });
+        
+        $('#group_id').change(function(){
+        	var id = $(this).val();
+        	$.post('/admin/menu/getPinlei', {id: id}, function (data) {
+                if (data.code == 0) {
+					var packJson = data.data;
+					var html='';
+					for(var p in packJson){
+						//遍历json数组时，这么写p为索引，0,1
+						html += '<li style="margin-top:10px" class="btn btn-secondary radius" ><span data-id="'+packJson[p].id+'">'+packJson[p].title+'</span></li>';
+
+					}
+					$('#pinlei').empty();
+					$('#pinlei').append(html);
+					$('#pinlei').show();
+                } else {
+                    layer.alert(data.msg);
+                }
+            }, 'json')
         });
     })
     
