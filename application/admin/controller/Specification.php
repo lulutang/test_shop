@@ -219,27 +219,15 @@ class Specification
    	if ($this->request->isAjax() && $this->request->isPost()) {
    		$data = $this->request->post();
    		$file = TMP_PATH.$data['file'];
-   		$header = ['规格名称', '所属品类'];
+   		$header = ['A'=>'id', 'B'=>'title', 'C'=>'cname'];
    		
    		if ($error = \Excel::parse($file, $header, "10000", 'import_data')) {
-   			throw new Exception($error);
+   			//throw new Exception($error);
+   			return ajax_return_adv('导入成功'.$error.'条数据', 'parent');
    		}
-   		$list = Db::name("CategoryManagement")->field('id')->where(array('id' => $data['id'],'status' => 0))->find();
-   		if(!$list){
-   			return ajax_return_adv('删除异常', '');
-   		}
-   		// 更新数据表
-   		 
-   		$log['status'] = 1;
-   		$log['admin_id'] = UID;
-   		$log['update_time'] = time();
-   		$id = Db::name("CategoryManagement")->where(array('id' => $data['id']))->update($log);
-   		if($id){
-   			return ajax_return_adv('删除成功', 'parent');
-   		}else{
-   			return ajax_return_adv('删除失败，请重试', '');
-   			 
-   		}
+   		
+   	  
+   		
    		 
    	}else{
    		return $this->view->fetch();

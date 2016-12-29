@@ -425,6 +425,19 @@ function get_specification_by_id($id){
 	
 }
 
-function import_data(){
-	
+function import_data($data){
+	$insert = array();
+	foreach ($data as $val){
+			$list = Db::name("CategoryManagement")->field('id')->where(array('title'=>$val['cname']))->find();
+			$slist = Db::name ( "SpecificationManagement" )->field('id')->where(array('title'=>$val['title'],'status'=>0))->find();
+				
+			
+			if($list['id'] && !$slist['id']){
+				$insert[] =array('cid'=>$list['id'],'title'=>$val['title']);
+			}
+		
+	}
+	if($insert){
+		 Db::name ( "SpecificationManagement" )->insertAll ( $insert );
+	}
 }
