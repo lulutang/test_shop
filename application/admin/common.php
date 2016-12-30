@@ -425,6 +425,12 @@ function get_specification_by_id($id){
 	
 }
 
+function get_category_by_id($id){
+	$list = Db::name("SpecificationManagement")->field('title')->where(array('id'=>$id))->find();
+	return $list['title'];
+
+}
+
 function import_data($data){
 	$insert = array();
 	foreach ($data as $val){

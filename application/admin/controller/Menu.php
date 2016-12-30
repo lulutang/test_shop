@@ -103,6 +103,8 @@ class Menu
 			}
    		}
    		unset($post['img_src']);
+   		$post['add_time'] = time();
+   		$post['admin_id'] = UID;
    		$res = Db::name("product")->insert ($post);
    		if($res){
    			return ajax_return_adv('操作成功', 'parent');
