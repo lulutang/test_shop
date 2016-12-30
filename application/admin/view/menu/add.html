@@ -3,6 +3,8 @@
 <div class="page-container">
     <form class="form form-horizontal" id="form" method="post" action="{:\\think\\Request::instance()->baseUrl()}">
         <input type="hidden" name="id" value="{$vo.id ?? ''}">
+        <input type="hidden" name="pid" value="">
+        
         <div class="row cl">
             <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>商品名称（中文）：</label>
             <div class="formControls col-xs-6 col-sm-6">
@@ -119,7 +121,7 @@
             <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>规格：</label>
             <div class="formControls col-xs-6 col-sm-9">
                 <span style="width: 641px;">
-                 <ul id="min_title_list" class="acrossTab cl" style="background-image:url(); width: 482px; left: 0px;">
+                 <ul id="min_title_list" class="acrossTab cl" style="background-image:url();width:482px; left: 0px;display:none">
                     <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
                     <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
                     <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
@@ -205,7 +207,7 @@
 					var html='';
 					for(var p in packJson){
 						//遍历json数组时，这么写p为索引，0,1
-						html += '<li style="margin-top:10px" class="btn btn-secondary radius" ><span data-id="'+packJson[p].id+'">'+packJson[p].title+'</span></li>';
+						html += '<li style="margin-top:10px" class="btn btn-secondary radius" ><span onclick="ping_lei('+packJson[p].id+',\''+packJson[p].title+'\')" >'+packJson[p].title+'</span></li>';
 
 					}
 					$('#pinlei').empty();
@@ -216,8 +218,16 @@
                 }
             }, 'json')
         });
+       
     })
-    
+    function ping_lei(id, string){
+    	var html='';
+		html = '<li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-id="'+id+'">'+string+'</span><i></i></li>';
+		$('#min_title_list').empty();
+		$('#min_title_list').append(html);
+		$('#min_title_list').show();
+		$('#pid').val(id)
+    }
     function del_path(id){
     	$('#img_src_'+id).attr('src','http://s.mysipo.com/manage/Uploads/Picture/2016-10-21/5809beb8477e8.png');
     	$('#upload_'+id).attr('value','');
