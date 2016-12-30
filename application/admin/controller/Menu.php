@@ -52,11 +52,20 @@ class Menu
      */
     public function index()
     {
-    	$this->view->assign('list', array());
-    	 
-    	$this->view->assign('page', '');
-    	 
-        $this->view->assign('count', 0); 
+    	
+    	$name = $this->request->param('name');
+    	$where = array('status' => 0);
+    	
+    	if($name){
+    		$where['title']=array('like',$name);
+    	}
+    	
+    	$list = Db::name("product")->where($where)->order('id desc')->paginate(10);
+    	$count = Db::name("product")->where($where)->count();
+    	$this->view->assign('list', $list);
+    	
+    	
+    	$this->view->assign('count', $count);
         return $this->view->fetch();
         
     }
@@ -67,6 +76,39 @@ class Menu
    public function add()
    {
    	if ($this->request->isAjax() && $this->request->isPost()) {
+   		$post = $this->request->Post();
+   		if(!$post){
+   			return ajax_return_adv('操作异常');
+   		}
+   		
+   		$post['product_code'] = date('YmdHis');
+   		
+		foreach ( $post ['img_src'] as $key => $pic ) {
+			switch ($key) {
+				case 0 :
+					$post['frist_img']=$pic;
+					break;
+				case 1 :
+					$post['two_img']=$pic;
+					break;
+				case 2 :
+					$post['three_img']=$pic;
+					break;
+				case 3 :
+					$post['four_img']=$pic;
+					break;
+				case 4 :
+					$post['five_img']=$pic;
+					break;
+			}
+   		}
+   		unset($post['img_src']);
+   		$res = Db::name("product")->insert ($post);
+   		if($res){
+   			return ajax_return_adv('操作成功', 'parent');
+   		}else{
+   			return ajax_return_adv('数据库操作异常');
+   		}
    		
    	}else{
    		$where = array('status' => 0);
