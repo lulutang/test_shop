@@ -303,7 +303,10 @@ function change_status(ret, obj, type) {
     //配置数据，TYPE:['下一状态文字描述','当前状态class颜色','下一状态class颜色','下一状态方法名','状态标签选择器','下一状态标签icon','下一状态标签title']
     var data = {
         'resume': ['禁用', 'success', 'warning', 'forbid', '.status', '&#xe615;', '正常'],
-        'forbid': ['恢复', 'warning', 'success', 'resume', '.status', '&#xe631;', '禁用']
+        'forbid': ['恢复', 'warning', 'success', 'resume', '.status', '&#xe631;', '禁用'],
+        'shangjia': ['上架', 'success', 'warning', 'forbid', '.status', '&#xe615;', '上架'],
+        'xiajia': ['下架', 'warning', 'success', 'forbid', '.status', '&#xe631;', '下架']
+       
     };
     var $this = $(obj);
     $this.html(data[type][0])

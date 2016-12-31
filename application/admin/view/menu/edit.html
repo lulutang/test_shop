@@ -2,61 +2,181 @@
 {block name="content"}
 <div class="page-container">
     <form class="form form-horizontal" id="form" method="post" action="{:\\think\\Request::instance()->baseUrl()}">
-        <input type="hidden" name="id" value="{$vo.id ?? ''}">
+        <input type="hidden" id="pid" name="s_id" value="{$vo.s_id}">
+        
+         <input type="hidden" id="id" name="id" value="{$vo.id}">
         <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>分组名称：</label>
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>商品编号：</label>
             <div class="formControls col-xs-6 col-sm-6">
-                <input type="text" class="input-text" value="{$vo.name ?? ''}" placeholder="" name="name"
-                       datatype="*" nullmsg="请填写分组名称">
+                <input type="text" class="input-text" readonly value="{$vo.product_code ?? ''}" placeholder="" name="product_code"
+                        >
             </div>
             <div class="col-xs-3 col-sm-3"></div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-3">图标：</label>
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>商品名称（中文）：</label>
             <div class="formControls col-xs-6 col-sm-6">
-                <input type="text" class="input-text" value="{:isset($vo.icon) ? htmlspecialchars($vo.icon) : ''}"
-                       placeholder="不填先默认为列表图标" name="icon">
+                <input type="text" class="input-text" value="{$vo.title ?? ''}" placeholder="" name="title"
+                       datatype="*" nullmsg="请填写商品名称（中文）">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+          <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>商品名称（英文）：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.title_en ?? ''}" placeholder="" name="title_en"
+                       datatype="*" nullmsg="请填写商品名称（英文）">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>商品价格：</label>
+            <div class="formControls col-xs-6 col-sm-6 skin-minimal">
+                <div class="radio-box">
+                     <label class="form-label col-xs-3 col-sm-6"><span class="c-red">*</span>标准价格：</label>
+		            <div class="formControls col-xs-6 col-sm-6">
+		                <input type="text" class="input-text" value="{$vo.price ?? ''}" placeholder="" name="price"
+		                       datatype="*" nullmsg="请填写标准价格">
+		            </div>
+                </div>
+                <div class="col-xs-3 col-sm-3"></div>
+                
+                <div class="radio-box">
+                    <label class="form-label col-xs-3 col-sm-6"><span class="c-red">*</span>会员价格：</label>
+		            <div class="formControls col-xs-6 col-sm-6">
+		                <input type="text" class="input-text" value="{$vo.member_price ?? ''}" placeholder="" name="member_price"
+		                       datatype="*" nullmsg="请填写会员价格">
+		            </div>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+                    <div class="col-xs-3 col-sm-3"></div>
+        
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>商品图片：</label>
+            <div class="formControls col-xs-3 col-sm-9">
+            <table style="width:726px;margin-left: 0 auto;">
+            <tr >
+                <td><img id= "img_src_1" style="width:133px;height:168px;" src="<?php if(!empty($vo['frist_img'])){echo $vo['frist_img'];}else{echo 'http://s.mysipo.com/manage/Uploads/Picture/2016-10-21/5809beb8477e8.png';} ?> "></td>
+                <td><img id= "img_src_2" style="width:133px;height:168px;" src="<?php if(!empty($vo['two_img'])){echo $vo['two_img'];}else{echo 'http://s.mysipo.com/manage/Uploads/Picture/2016-10-21/5809beb8477e8.png';} ?> "></td>
+                <td><img id= "img_src_3" style="width:133px;height:168px;" src="<?php if(!empty($vo['three_img'])){echo $vo['three_img'];}else{echo 'http://s.mysipo.com/manage/Uploads/Picture/2016-10-21/5809beb8477e8.png';} ?> "></td>
+                <td><img id= "img_src_4" style="width:133px;height:168px;" src="<?php if(!empty($vo['four_img'])){echo $vo['four_img'];}else{echo 'http://s.mysipo.com/manage/Uploads/Picture/2016-10-21/5809beb8477e8.png';} ?> "></td>
+                <td><img id= "img_src_5" style="width:133px;height:168px;" src="<?php if(!empty($vo['five_img'])){echo $vo['five_img'];}else{echo 'http://s.mysipo.com/manage/Uploads/Picture/2016-10-21/5809beb8477e8.png';} ?> "></td>
+            </tr>
+            
+            <input type="hidden" id="upload_1" name="img_src[]" value="<?php if(!empty($vo['frist_img'])){echo $vo['frist_img'];} ?>" >
+            <input type="hidden" id="upload_2" name="img_src[]" value="<?php if(!empty($vo['two_img'])){echo $vo['two_img'];} ?>" >
+            <input type="hidden" id="upload_3" name="img_src[]" value="<?php if(!empty($vo['three_img'])){echo $vo['three_img'];} ?>" >
+            <input type="hidden" id="upload_4" name="img_src[]" value="<?php if(!empty($vo['four_img'])){echo $vo['four_img'];} ?>" >
+            <input type="hidden" id="upload_5" name="img_src[]" value="<?php if(!empty($vo['five_img'])){echo $vo['five_img'];} ?>" >
+            
+            <tr class="col-xs-3 col-sm-3"></tr>
+            <tr  class="text-c">
+                <td><button type="button" class="btn btn-primary radius " onclick="layer_open('文件上传','/admin/upload/index/id/img_src_1.html')">图片上传</button></td>
+                <td><button type="button" class="btn btn-primary radius " onclick="layer_open('文件上传','/admin/upload/index/id/img_src_2.html')">图片上传</button></td>
+                <td><button type="button" class="btn btn-primary radius " onclick="layer_open('文件上传','/admin/upload/index/id/img_src_3.html')">图片上传</button></td>
+                <td><button type="button" class="btn btn-primary radius " onclick="layer_open('文件上传','/admin/upload/index/id/img_src_4.html')">图片上传</button></td>
+                <td><button type="button" class="btn btn-primary radius " onclick="layer_open('文件上传','/admin/upload/index/id/img_src_5.html')">图片上传</button></td>
+            </tr>
+             <tr class="col-xs-3 col-sm-3"></tr>
+            <tr  class="text-c">
+                <td><button type="button" class="btn btn-danger radius " onclick="del_path(1)">清理图片</button></td>
+                <td><button type="button" class="btn btn-danger radius " onclick="del_path(2)">清理图片</button></td>
+                <td><button type="button" class="btn btn-danger radius " onclick="del_path(3)">清理图片</button></td>
+                <td><button type="button" class="btn btn-danger radius " onclick="del_path(4)">清理图片</button></td>
+                <td><button type="button" class="btn btn-danger radius " onclick="del_path(5)">清理图片</button></td>
+            </tr>
+            
+            </table>
+         
+            
+            
             </div>
             <div class="col-xs-3 col-sm-3"></div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-3 col-sm-3"></label>
             <div class="formControls col-xs-6 col-sm-6">
-                小图标请到<a class="c-blue" href="http://h-ui.net/Hui-3.7-Hui-iconfont.shtml" target="_blank" rel="nofollow">http://h-ui.net/Hui-3.7-Hui-iconfont.shtml</a>复制tab标签为阿里巴巴Iconfont下的icon文字，如
-                <span class="label label-success f-16">{:htmlspecialchars('&#xf0005;')}</span>
-            </div>
+                小提示：第一张图片为主图片
+<!--                 <span class="label label-success f-16">请务必上传一张</span>
+ -->            </div>
             <div class="col-xs-3 col-sm-3"></div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>排序：</label>
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>品类：</label>
             <div class="formControls col-xs-6 col-sm-6">
-                <input type="number" class="input-text" value="{$vo.sort ?? '50'}" placeholder=""
-                       name="sort" datatype="*" nullmsg="请填写排序">
+                <div class="select-box">
+                    <select name="c_id" id="group_id" class="select">
+                        <option value="0" >请选择</option>
+                        {volist name="list" id="vo1"}
+                        <option value="{$vo1.id}" <?php if($vo1['id']==$vo['c_id']){echo 'selected="selected"';}?>>{$vo1.title}</option>
+                        {/volist}
+                   </select>
+                </div>
+                      
+                
+                  <ul style="margin-top:10px" style="display:none" id="pinlei">
+                      <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-id="">{$vo.c_id|get_specification_by_id}</span><i></i></li>
+                 </ul>
             </div>
             <div class="col-xs-3 col-sm-3"></div>
         </div>
+        
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>规格：</label>
+            <div class="formControls col-xs-6 col-sm-9">
+                <span style="width: 641px;">
+                 <ul id="min_title_list" class="acrossTab cl" style="background-image:url();width:482px; left: 0px;">
+                    <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="">{$vo.s_id|get_category_by_id}</span><i></i></li>
+                 
+                 </ul>
+             
+                 </span>
+        
+            </div>
+            
+            
+            
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+
+        
+       
         <div class="row cl">
             <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>状态：</label>
             <div class="formControls col-xs-6 col-sm-6 skin-minimal">
                 <div class="radio-box">
-                    <input type="radio" name="status" id="radio-0" value="1">
-                    <label for="radio-0">启用</label>
+                    <input type="radio" name="type" id="radio-0" value="0" <?php if(isset($vo['status']) && $vo['status']!=1){echo 'checked="checked"';} ?> >
+                    <label for="radio-0">上架</label>
                 </div>
                 <div class="radio-box">
-                    <input type="radio" name="status" id="radio-1" value="0">
-                    <label for="radio-1">禁用</label>
+                    <input type="radio" name="type" id="radio-1" value="1" <?php if(isset($vo['status']) && $vo['status']=='1'){echo 'checked="checked"';} ?> >
+                    <label for="radio-1">下架</label>
                 </div>
             </div>
             <div class="col-xs-3 col-sm-3"></div>
         </div>
-        <div class="row cl">
+        
+           <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>库存：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.num ?? ''}" placeholder="" name="num"
+                       datatype="*" nullmsg="请填写库存">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+       <!--  <div class="row cl">
             <label class="form-label col-xs-3 col-sm-3">备注：</label>
             <div class="formControls col-xs-6 col-sm-6">
                 <textarea class="textarea" placeholder="备注" name="remark" onKeyUp="textarealength(this, 100)">{$vo.remark ?? ''}</textarea>
                 <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
             </div>
             <div class="col-xs-3 col-sm-3"></div>
-        </div>
+        </div> -->
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
                 <button type="submit" class="btn btn-primary radius">&nbsp;&nbsp;提交&nbsp;&nbsp;</button>
@@ -86,6 +206,40 @@
                 ajax_progress(ret);
             }
         });
+        
+        $('#group_id').change(function(){
+        	var id = $(this).val();
+        	$.post('/admin/menu/getPinlei', {id: id}, function (data) {
+                if (data.code == 0) {
+					var packJson = data.data;
+					var html='';
+					for(var p in packJson){
+						//遍历json数组时，这么写p为索引，0,1
+						html += '<li style="margin-top:10px" class="btn btn-secondary radius" ><span onclick="ping_lei('+packJson[p].id+',\''+packJson[p].title+'\')" >'+packJson[p].title+'</span></li>';
+
+					}
+					$('#pinlei').empty();
+					$('#pinlei').append(html);
+					$('#pinlei').show();
+                } else {
+                    layer.alert(data.msg);
+                }
+            }, 'json')
+        });
+       
     })
+    function ping_lei(id, string){
+    	var html='';
+		html = '<li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-id="'+id+'">'+string+'</span><i></i></li>';
+		$('#min_title_list').empty();
+		$('#min_title_list').append(html);
+		$('#min_title_list').show();
+		$('#pid').val(id)
+    }
+    function del_path(id){
+    	$('#img_src_'+id).attr('src','http://s.mysipo.com/manage/Uploads/Picture/2016-10-21/5809beb8477e8.png');
+    	$('#upload_'+id).attr('value','');
+
+    }
 </script>
 {/block}

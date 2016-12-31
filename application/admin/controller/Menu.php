@@ -138,21 +138,40 @@ class Menu
    public function edit()
    {
    	if ($this->request->isAjax() && $this->request->isPost()) {
-   		$data = $this->request->post();
-   		$name = $data ['name'];
-   		$group_id = $data ['group_id'];
-   		$id = $data['id'];
-   		$list = Db::name("SpecificationManagement")->field('id')->where(array('id' => $id, 'status' => 0))->find();
+   		$post = $this->request->post();
+   		
+   		$id = $post['id'];
+   		$list = Db::name("product")->field('id')->where(array('id' => $id, 'status' => 0))->find();
    		if(!$list){
    			return ajax_return_adv('修改异常', '');
    		}
    		// 更新数据表
    
-   		$log['title'] = $name;
-   		$log['admin_id'] = UID;
-   		$log['cid'] = $group_id;
-   		$log['update_time'] = time();
-   		$id = Db::name("SpecificationManagement")->where(array('id' => $data['id']))->update($log);
+   		foreach ( $post ['img_src'] as $key => $pic ) {
+			switch ($key) {
+				case 0 :
+					$post['frist_img']=$pic;
+					break;
+				case 1 :
+					$post['two_img']=$pic;
+					break;
+				case 2 :
+					$post['three_img']=$pic;
+					break;
+				case 3 :
+					$post['four_img']=$pic;
+					break;
+				case 4 :
+					$post['five_img']=$pic;
+					break;
+			}
+   		}
+   		
+   		unset($post['img_src']);
+   		unset($post['id']);
+   		$post['update_time'] = time();
+   		$post['admin_id'] = UID;
+   		$id = Db::name("product")->where(array('id' => $id))->update($post);
    		if($id){
    			return ajax_return_adv('修改成功', 'parent');
    		}else{
@@ -165,14 +184,19 @@ class Menu
    
    		$id = $this->request->param('id');
    		 
-   		$list = Db::name("SpecificationManagement")->field('id,title,cid')->where(array('id' => $id))->find();
+   		$list = Db::name("product")->where(array('id' => $id))->find();
    		$this->view->assign('vo', $list);
+   		//已有规格
+   		$slist = Db::name("SpecificationManagement")->field('id,title,cid')->where(array('id' => $list['s_id']))->find();
+   		$this->view->assign('slist', $slist);
    		 
-   		$list = Db::name("CategoryManagement")->field('id,title')->order('id desc')->select();
-   		$this->view->assign('list', $list);
-   		 
-   		 
-   		 
+   	
+   		//已有品类
+   		$clists = Db::name("CategoryManagement")->field('id,title')->where(array('id' => $list['c_id']))->order('id desc')->select();
+   		$this->view->assign('clists', $clists);
+   		//品类
+   		$clist = Db::name("CategoryManagement")->field('id,title')->order('id desc')->select();
+   		$this->view->assign('list', $clist);
    		 
    		return $this->view->fetch();
    		 
@@ -187,7 +211,7 @@ class Menu
    {
    	if ($this->request->isAjax() && $this->request->isPost()) {
    		$data = $this->request->post();
-   		$list = Db::name("product")->field('id')->where(array('id' => $data['id'],'status' => 0))->find();
+   		$list = Db::name("product")->field('id')->where(array('id' => array('in',$data['id']),'status' => 0))->find();
    		if(!$list){
    			return ajax_return_adv('删除异常', '');
    		}
@@ -196,7 +220,7 @@ class Menu
    		$log['status'] = 1;
    		$log['admin_id'] = UID;
    		$log['update_time'] = time();
-   		$id = Db::name("product")->where(array('id' => $data['id']))->update($log); 
+   		$id = Db::name("product")->where(array('id' => array('in',$data['id'])))->update($log); 
    		if($id){
    			return ajax_return_adv('删除成功', 'parent');
    		}else{
@@ -208,6 +232,36 @@ class Menu
    		return $this->view->fetch();
    
    	}
+   }
+   
+   /**
+    * 下架菜单
+    */
+   public function forbid(){
+    	if ($this->request->isAjax() && $this->request->isPost()) {
+   		$id = $this->request->param('id');
+   		$type = $this->request->param('type')==1?0:1;
+   		$list = Db::name("product")->field('id')->where(array('id' => $id,'type' => $type))->find();
+   		if(!$list){
+   			return ajax_return_adv('操作异常', '');
+   		}
+   		// 更新数据表
+   		 
+   		$log['type'] = $this->request->param('type');
+   		$log['admin_id'] = UID;
+   		$log['update_time'] = time();
+   		$id = Db::name("product")->where(array('id' => $id))->update($log);
+   		if($id){
+   			return ajax_return_adv('操作成功','current');
+   		}else{
+   			return ajax_return_adv('操作失败，请重试', '');
+   				
+   		}
+   		 
+    	}else{
+   		return $this->view->fetch();
+   		 
+    	}
    }
     
 }

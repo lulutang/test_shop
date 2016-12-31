@@ -142,7 +142,7 @@ class Category
    {
    	if ($this->request->isAjax() && $this->request->isPost()) {
    	    $data = $this->request->post();
-   		$list = Db::name("CategoryManagement")->field('id')->where(array('id' => $data['id'],'status' => 0))->find();
+   		$list = Db::name("CategoryManagement")->field('id')->where(array('id' => array('in',$data['id']),'status' => 0))->find();
    		if(!$list){
    			return ajax_return_adv('删除异常', '');
    		}
@@ -151,7 +151,7 @@ class Category
    		$log['status'] = 1;
    		$log['admin_id'] = UID;
    		$log['update_time'] = time();
-   		$id = Db::name("CategoryManagement")->where(array('id' => $data['id']))->update($log);
+   		$id = Db::name("CategoryManagement")->where(array('id' => array('in',$data['id'])))->update($log);
    		if($id){
    			return ajax_return_adv('删除成功', 'parent');
    		}else{

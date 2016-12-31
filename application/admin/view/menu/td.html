@@ -8,4 +8,5 @@
 <td>{$vo.s_id|get_category_by_id}</td>
 <td>{$vo.price}</td>
 <td>{$vo.member_price}</td>
-<td>{$vo.add_time|date='Y-m-d',###}</br>{$vo.add_time|date='H:i:s',###}</td>
+<td><?php $time=$vo['add_time']?$vo['add_time']:$vo['update_time'];?> {$time|date='Y-m-d',###}</br>{$time|date='H:i:s',###}</td>
+<td>{$vo.type==1?'下架':'上架'}</td>

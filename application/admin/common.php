@@ -115,38 +115,62 @@ function show_status($status, $id, $field = 'id', $controller = '')
         case -1 :
             $ret = '<a href="javascript:;" onclick="ajax_req(\'' . Url::build($controller . '/recycle', [$field => $id]) . '\')" class="label label-secondary radius" title="点击还原">还原</a>';
             break;
+       
     }
 
     return $ret;
 }
 
 /**
- * 显示状态
- * @param int $status     0|1|-1
- * @param bool $imageShow true只显示图标|false只显示文字
+ * 显示上架下架状态
+ * @param int $status     0|1
  * @return string
  */
-function get_status($status, $imageShow = true)
+function show_s_status($status, $id)
 {
-    switch ($status) {
-        case 0 :
-            $showText = '禁用';
-            $showImg = '<i class="Hui-iconfont c-warning status" title="禁用">&#xe631;</i>';
-            break;
-        case -1 :
-            $showText = '删除';
-            $showImg = '<i class="Hui-iconfont c-danger status" title="删除">&#xe6e2;</i>';
-            break;
-        case 1 :
-        default :
-            $showText = '正常';
-            $showImg = '<i class="Hui-iconfont c-success status" title="正常">&#xe615;</i>';
+	switch ($status) {
+		// 上架的需要下架
+		case 1 :
+			$ret = '<a href="javascript:;" onclick="ajax_req(\'' . Url::build('/admin/menu/forbid', ['id' => $id,'type'=>'0']) . '\',{},change_status,[this,\'xiajia\'])" class="label label-success radius" title="点击上架">上架</a>';
+			break;
+			// 下架的需要上架
+		case 0 :
+			$ret = '<a href="javascript:;" onclick="ajax_req(\'' . Url::build('/admin/menu/forbid', ['id' => $id,'type'=>'1']) . '\',{},change_status,[this,\'shangjia\'])" class="label label-warning radius" title="点击下架">下架</a>';
+			break;
+			
+		
+	}
 
-    }
-
-    return ($imageShow === true) ? $showImg : $showText;
+	return $ret;
 }
 
+/**
+  * 显示状态
+  * @param int $status     0|1|-1
+  * @param bool $imageShow true只显示图标|false只显示文字
+  * @return string
+  */
+
+function get_status($status, $imageShow = true)
+{
+	switch ($status) {
+		case 0 :
+			$showText = '禁用';
+			$showImg = '<i class="Hui-iconfont c-warning status" title="禁用">&#xe631;</i>';
+			break;
+		case -1 :
+			$showText = '删除';
+			$showImg = '<i class="Hui-iconfont c-danger status" title="删除">&#xe6e2;</i>';
+			break;
+		case 1 :
+		default :
+			$showText = '正常';
+			$showImg = '<i class="Hui-iconfont c-success status" title="正常">&#xe615;</i>';
+	
+	}
+	return ($imageShow === true) ? $showImg : $showText;
+	
+}
 /**
  * 框架内部默认ajax返回
  * @param string $msg      提示信息

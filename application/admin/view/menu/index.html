@@ -22,6 +22,9 @@
         <tr class="text-c">
             {include file="td" /}
             <td class="f-14">
+          
+                {$vo.type|show_s_status=###,$vo['id']}
+            
                 {tp:menu menu='sedit,sdelete' /}
             </td>
         </tr>

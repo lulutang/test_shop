@@ -28,8 +28,8 @@
                 <div class="radio-box">
                      <label class="form-label col-xs-3 col-sm-6"><span class="c-red">*</span>标准价格：</label>
 		            <div class="formControls col-xs-6 col-sm-6">
-		                <input type="text" class="input-text" value="{$vo.price ?? ''}" placeholder="" name="price"
-		                       datatype="*" nullmsg="请填写标准价格">
+		               <input type="text" class="input-text" maxlength="6" value="{$vo.price ?? ''}" placeholder="￥" name="price"
+		                       datatype="*" nullmsg="请填写标准价格,货币以人民币为基准">
 		            </div>
                 </div>
                 <div class="col-xs-3 col-sm-3"></div>
@@ -37,8 +37,8 @@
                 <div class="radio-box">
                     <label class="form-label col-xs-3 col-sm-6"><span class="c-red">*</span>会员价格：</label>
 		            <div class="formControls col-xs-6 col-sm-6">
-		                <input type="text" class="input-text" value="{$vo.member_price ?? ''}" placeholder="" name="member_price"
-		                       datatype="*" nullmsg="请填写会员价格">
+		               <input type="text" class="input-text" maxlength="6" value="{$vo.member_price ?? ''}" placeholder="￥" name="member_price"
+		                       datatype="*" nullmsg="请填写会员价格,货币以人民币为基准">
 		            </div>
                 </div>
             </div>
@@ -121,17 +121,7 @@
             <div class="formControls col-xs-6 col-sm-9">
                 <span style="width: 641px;">
                  <ul id="min_title_list" class="acrossTab cl" style="background-image:url();width:482px; left: 0px;display:none">
-                    <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
-                    <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
-                    <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
-                    <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
-                                     <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">啤酒</span><i></i></li>
-                                     <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
-                                     <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
-                                     <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
-                                     <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
-                                     <li style="margin-top:10px;margin-right:10px" class="btn btn-secondary radius" ><span data-href="/admin/menu/index.html">菜单列表</span><i></i></li>
-                 
+                   
                  </ul>
              
                  </span>
@@ -150,11 +140,11 @@
             <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>状态：</label>
             <div class="formControls col-xs-6 col-sm-6 skin-minimal">
                 <div class="radio-box">
-                    <input type="radio" name="status" id="radio-0" value="0">
+                    <input type="radio" name="type" id="radio-0" value="0">
                     <label for="radio-0">上架</label>
                 </div>
                 <div class="radio-box">
-                    <input type="radio" name="status" id="radio-1" value="1">
+                    <input type="radio" name="type" id="radio-1" value="1">
                     <label for="radio-1">下架</label>
                 </div>
             </div>
