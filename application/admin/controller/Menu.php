@@ -47,7 +47,7 @@ class Menu
     }
 
     /**
-     * 用户登录页面
+     * 菜单页面
      * @return mixed
      */
     public function index()
@@ -130,7 +130,84 @@ class Menu
    	$id = $data ['id'];
    	$list = Db::name("SpecificationManagement")->field('id,title')->where(array('cid' => $id, 'status' => 0))->select();
    	return ajax_return($list);
-   	
-   	
    }
+   
+   /**
+    * 修改菜单
+    */
+   public function edit()
+   {
+   	if ($this->request->isAjax() && $this->request->isPost()) {
+   		$data = $this->request->post();
+   		$name = $data ['name'];
+   		$group_id = $data ['group_id'];
+   		$id = $data['id'];
+   		$list = Db::name("SpecificationManagement")->field('id')->where(array('id' => $id, 'status' => 0))->find();
+   		if(!$list){
+   			return ajax_return_adv('修改异常', '');
+   		}
+   		// 更新数据表
+   
+   		$log['title'] = $name;
+   		$log['admin_id'] = UID;
+   		$log['cid'] = $group_id;
+   		$log['update_time'] = time();
+   		$id = Db::name("SpecificationManagement")->where(array('id' => $data['id']))->update($log);
+   		if($id){
+   			return ajax_return_adv('修改成功', 'parent');
+   		}else{
+   			return ajax_return_adv('修改失败，请重试', '');
+   				
+   		}
+   		 
+   	}else{
+   		 
+   
+   		$id = $this->request->param('id');
+   		 
+   		$list = Db::name("SpecificationManagement")->field('id,title,cid')->where(array('id' => $id))->find();
+   		$this->view->assign('vo', $list);
+   		 
+   		$list = Db::name("CategoryManagement")->field('id,title')->order('id desc')->select();
+   		$this->view->assign('list', $list);
+   		 
+   		 
+   		 
+   		 
+   		return $this->view->fetch();
+   		 
+   	}
+   }
+
+   
+   /**
+    * 删除菜单
+    */
+   public function delete()
+   {
+   	if ($this->request->isAjax() && $this->request->isPost()) {
+   		$data = $this->request->post();
+   		$list = Db::name("product")->field('id')->where(array('id' => $data['id'],'status' => 0))->find();
+   		if(!$list){
+   			return ajax_return_adv('删除异常', '');
+   		}
+   		// 更新数据表
+   
+   		$log['status'] = 1;
+   		$log['admin_id'] = UID;
+   		$log['update_time'] = time();
+   		$id = Db::name("product")->where(array('id' => $data['id']))->update($log); 
+   		if($id){
+   			return ajax_return_adv('删除成功', 'parent');
+   		}else{
+   			return ajax_return_adv('删除失败，请重试', '');
+   				
+   		}
+   
+   	}else{
+   		return $this->view->fetch();
+   
+   	}
+   }
+    
 }
