@@ -52,136 +52,142 @@ class Department
      */
     public function index()
     {
-    	$this->view->assign('list', array());
-    	 
+    	
+    	$where = array('status' => 0, 'pid'=>0);
+    	$list = Db::name("ViewAdminDepartment")->where($where)->order('id desc')->select();
+    	if($list){
+    		foreach ($list as &$val){
+
+    			$where = array('status' => 0, 'pid'=>$val['id']);
+    			$lists = Db::name("ViewAdminDepartment")->where($where)->order('id desc')->select();
+    			if($lists){
+    				$val['erji'] = $lists;
+    			}
+    		}
+    	}
+    	
+    	$this->view->assign('list', $list);
+    	$this->view->assign('count', 0);
     	$this->view->assign('page', '');
-    	 
-        $this->view->assign('count', 0); 
         return $this->view->fetch();
         
     }
 
     /**
-     * 增加菜单
+     * 增加部门
      */
    public function add()
    {
-   	  return $this->view->fetch();
+   	
+   	
+      if ($this->request->isAjax() && $this->request->isPost()) {
+	   		 $data = $this->request->post();
+	   		 
+	   		 $list = Db::name("ViewAdminDepartment")->field('id')->where(array('title'=>$data['title'],'status'=>0))->find();
+	   		 if($list){
+	   		 	return ajax_return_adv('已存在，请不要重复添加', '');
+	   		 }
+	   		
+	   		 // 写入数据表
+	   		
+	   	
+	   		 $data['admin_id'] = UID;
+	   		 $data['add_time'] = time();
+	   		 $id = Db::name("ViewAdminDepartment")->insert($data);
+	   		 if($id){
+	   		 	return ajax_return_adv('增加成功', 'parent');
+	   		 }else{
+	   		 	return ajax_return_adv('增加失败，请重试', '');
+	   		 	
+	   		 }
+	   		 
+	   	}else{
+	   		$id = $this->request->param('id');
+	   		$this->view->assign('pid', $id);
+	   		return $this->view->fetch();
+	   		 
+	   	}
+   }
+   /**
+    * 删除用户
+    */
+   public function delete()
+   {
+   	if ($this->request->isAjax() && $this->request->isPost()) {
+   		$data = $this->request->post();
+   		$list = Db::name("ViewAdminDepartment")->field('id')->where(array('id' => array('in',$data['id']),'status' => 0))->find();
+   		if(!$list){
+   			return ajax_return_adv('删除异常', '');
+   		}
+   		// 更新数据表
+   
+   		$log['status'] = 1;
+   		$log['admin_id'] = UID;
+   		$log['update_time'] = time();
+   		$id = Db::name("ViewAdminDepartment")->where(array('id' => array('in',$data['id'])))->update($log);
+   		$ids= explode(',', $data['id']);
+   		
+   		foreach ($ids as $val){
+   			if($val>0){
+   				$list = Db::name("ViewAdminDepartment")->field('id,pid')->where(array('id' => $val))->find();
+   					if($list['pid'] == 0){
+   						$id = Db::name("ViewAdminDepartment")->where(array('pid' => $list['id']))->update($log);
+   							
+   					}
+   			}
+   			
+   		}
+   		
+   		if($id){
+   			return ajax_return_adv('删除成功', 'parent','','','/admin/department/index');
+   		}else{
+   			return ajax_return_adv('删除失败，请重试', '');
+   				
+   		}
+   
+   	}else{
+   		return $this->view->fetch();
+   
+   	}
+   }
+    
+   /**
+    * 修改品类
+    */
+   public function edit()
+   {
+   	if ($this->request->isAjax() && $this->request->isPost()) {
+   		$data = $this->request->post();
+   
+   		$id = $data['id'];
+   		$list = Db::name("ViewAdminDepartment")->field('id')->where(array('id' => $id, 'status' => 0))->find();
+   		if(!$list){
+   			return ajax_return_adv('修改异常', '');
+   		}
+   		// 更新数据表
+   
+   		 
+   		$data['admin_id'] = UID;
+   		$data['update_time'] = time();
+   		unset($data['id']);
+   		$id = Db::name("ViewAdminDepartment")->where(array('id' => $id))->update($data);
+   		if($id){
+   			return ajax_return_adv('修改成功', 'parent');
+   		}else{
+   			return ajax_return_adv('修改失败，请重试', '');
+   				
+   		}
+   		 
+   	}else{
+   		$id = $this->request->param('id');
+   
+   		$list = Db::name("ViewAdminDepartment")->where(array('id' => $id))->find();
+   		$this->view->assign('vo', $list);
+   		 
+   		return $this->view->fetch();
+   		 
+   	}
    }
 
-
-    /**
-     * 登录检测
-     * @return \think\response\Json
-     */
-    public function checkLogin()
-    {
-        if ($this->request->isAjax() && $this->request->isPost()) {
-            $data = $this->request->post();
-            $validate = Loader::validate('Pub');
-            if (!$validate->scene('login')->check($data)) {
-                return ajax_return_adv_error($validate->getError());
-            }
-
-            $map['account'] = $data['account'];
-            $map['status'] = 1;
-            $auth_info = \Rbac::authenticate($map);
-
-            // 使用用户名、密码和状态的方式进行认证
-            if (null === $auth_info) {
-                return ajax_return_adv_error('帐号不存在或已禁用！');
-            } else {
-                if ($auth_info['password'] != password_hash_tp($data['password'])) {
-                    return ajax_return_adv_error('密码错误！');
-                }
-
-                // 生成session信息
-                Session::set(Config::get('rbac.user_auth_key'), $auth_info['id']);
-                Session::set('user_name', $auth_info['account']);
-                Session::set('real_name', $auth_info['realname']);
-                Session::set('last_login_ip', $auth_info['last_login_ip']);
-                Session::set('last_login_time', $auth_info['last_login_time']);
-
-                // 超级管理员标记
-                if ($auth_info['id'] == 1) {
-                    Session::set(Config::get('rbac.admin_auth_key'), true);
-                }
-
-                // 保存登录信息
-                $update['last_login_time'] = time();
-                $update['login_count'] = ['exp', 'login_count+1'];
-                $update['last_login_ip'] = $this->request->ip();
-                Db::name("AdminUser")->where('id', $auth_info['id'])->update($update);
-
-                // 记录登录日志
-                $log['uid'] = $auth_info['id'];
-                $log['login_ip'] = $this->request->ip();
-                $log['login_location'] = implode(" ", \Ip::find($log['login_ip']));
-                $log['login_browser'] = \Agent::getBroswer();
-                $log['login_os'] = \Agent::getOs();
-                Db::name("LoginLog")->insert($log);
-
-                // 缓存访问权限
-                \Rbac::saveAccessList();
-
-                return ajax_return_adv('登录成功！', '');
-            }
-        } else {
-            throw new Exception("非法请求");
-        }
-    }
-
-    /**
-     * 修改密码
-     */
-    public function password()
-    {
-        $this->checkUser();
-        if ($this->request->isPost()) {
-            $data = $this->request->post();
-            // 数据校验
-            $validate = Loader::validate('Pub');
-            if (!$validate->scene('password')->check($data)) {
-                return ajax_return_adv_error($validate->getError());
-            }
-
-            // 查询旧密码进行比对
-            $info = Db::name("AdminUser")->where("id", UID)->field("password")->find();
-            if ($info['password'] != password_hash_tp($data['oldpassword'])) {
-                return ajax_return_adv_error("旧密码错误");
-            }
-
-            // 写入新密码
-            if (false === Loader::model('AdminUser')->updatePassword(UID, $data['password'])) {
-                return ajax_return_adv_error("密码修改失败");
-            }
-
-            return ajax_return_adv("密码修改成功", '');
-        } else {
-            return $this->view->fetch();
-        }
-    }
-
-    /**
-     * 查看用户信息|修改资料
-     */
-    public function profile()
-    {
-        $this->checkUser();
-        if ($this->request->isPost()) {
-            // 修改资料
-            $data = $this->request->only(['realname', 'email', 'mobile', 'remark'], 'post');
-            if (Db::name("AdminUser")->where("id", UID)->update($data) === false) {
-                return ajax_return_adv_error("信息修改失败");
-            }
-
-            return ajax_return_adv("信息修改成功", '');
-        } else {
-            // 查看用户信息
-            $vo = Db::name("AdminUser")->field('realname,email,mobile,remark')->where("id", UID)->find();
-            $this->view->assign('vo', $vo);
-
-            return $this->view->fetch();
-        }
-    }
+   
 }

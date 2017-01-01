@@ -156,6 +156,14 @@ class Tp extends Taglib
                 	$class = isset($tag['class']) ? $tag['class'] : 'label-primary';
                 	$parseStr .= ' <a title="' . $title . '" href="javascript:;" onclick="layer_open(\'' . $title . '\',\'<?php echo \think\Url::build(\'' . $url . '\', [' . $param . ']); ?>\')" class="label radius ml-5 ' . $class . '">' . $title . '</a>';
                 	break;
+                	case 'sadd':
+                		// 增加
+                		$title = '增加';
+                		list($url, $param) = $this->parseUrl($url, 'id=$vo["id"]');
+                		 
+                		$class = isset($tag['class']) ? $tag['class'] : 'label-primary';
+                		$parseStr .= ' <a title="' . $title . '" href="javascript:;" onclick="layer_open(\'' . $title . '\',\'<?php echo \think\Url::build(\'' . $url . '\', [' . $param . ']); ?>\')" class="label radius ml-5 ' . $class . '">' . $title . '</a>';
+                		break;
                 default:
                 	
                     // 默认为小菜单

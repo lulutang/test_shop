@@ -1,15 +1,7 @@
 {tp:access action='add'}
-<a class="btn btn-primary radius" href="javascript:;" onclick="layer_open('添加','{:\\think\\Url::build(\'add\')}')"><i class="Hui-iconfont">&#xe600;</i> 添加</a>
+<a class="btn btn-primary radius" href="javascript:;" onclick="layer_open('添加一级分类','{:\\think\\Url::build(\'add\')}')"><i class="Hui-iconfont">&#xe600;</i> 添加一级分类</a>
 {/tp:access}
 
 {tp:access action='delete'}
 <a href="javascript:;" onclick="del_all('{:\\think\\Url::build(\'delete\')}')" class="btn btn-danger radius ml-5"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
-{/tp:access}
-
-{tp:access action='forbid'}
-<a href="javascript:;" onclick="forbid_all('{:\\think\\Url::build(\'forbid\')}')" class="btn btn-warning radius ml-5"><i class="Hui-iconfont">&#xe645;</i> 批量导入</a>
-{/tp:access}
-
-{tp:access action='resume'}
-<a href="javascript:;" onclick="resume_all('{:\\think\\Url::build(\'resume\')}')" class="btn btn-success radius ml-5"><i class="Hui-iconfont">&#xe644;</i> 批量导出</a>
 {/tp:access}

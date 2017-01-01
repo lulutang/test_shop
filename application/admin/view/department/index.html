@@ -1,14 +1,14 @@
 {extend name="template/base" /}
 {block name="content"}
 <div class="page-container">
-    {include file='form' /}
+    <!-- {include file='form' /} -->
      <div class="cl pd-5 bg-1 bk-gray">
         <span class="l">
             {include file='table_menu' /}
         </span>
-        <span class="r pt-5 pr-5">
+       <!--  <span class="r pt-5 pr-5">
             共有数据 ：<strong>{$count}</strong> 条
-        </span>
+        </span> -->
     </div> 
     <table class="table table-border table-bordered table-hover table-bg mt-20">
         <thead>
@@ -21,11 +21,16 @@
         {volist name="list" id="vo"}
         <tr class="text-c">
             {include file="td" /}
-            <td class="f-14">
-                {$vo.status|show_status=$vo.id}
-                {tp:menu menu='sedit,sdelete' /}
-            </td>
+          
         </tr>
+        <?php if(isset($vo['erji'])){?>
+           {volist name="vo.erji" id="v"}
+        <tr class="text-c dingji_{$vo.id}_{$vo.id}">
+            {include file="tder" /}
+          
+        </tr>
+        {/volist}
+        <?php }?>
         {/volist}
         </tbody>
     </table>
@@ -34,6 +39,14 @@
 {/block}
 {block name='script'}}
 <script>
+function dingji(id){
+	$('.dingji_'+id).html('<a  data-title="一级菜单" href="javascript:zhankai({$vo.id});"><b class="dingji_'+id+'">-</b></a>');
+	$('.dingji_'+id+'_'+id).hide();
+}
 
+function zhankai(id){
+	$('.dingji_'+id).html('<a  data-title="一级菜单" href="javascript:dingji({$vo.id});"><b class="dingji_'+id+'">+</b></a>');
+	$('.dingji_'+id+'_'+id).show();
+}
 </script>
 {/block}
