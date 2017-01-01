@@ -17,6 +17,7 @@ use think\Response;
 use think\Request;
 use think\Url;
 use think\Db;
+use Qiniu\time;
 /**
  * CURLFILE 兼容性处理 php < 5.5
  * 一定不要修改、删除，否则 curl 可能无法上传文件
@@ -470,4 +471,38 @@ function import_data($data){
 	if($insert){
 		 Db::name ( "SpecificationManagement" )->insertAll ( $insert );
 	}
+}
+
+function import_member($data){
+	$insert = array();
+	foreach ($data as $val){
+		if($val['mobile'] && $val['username']){
+			if($val['username']){
+				$list = Db::name("Member")->field('id')->where(array('username' => $val['username'],'status'=>0))->find();
+				if($list){
+					continue;
+				}
+			}
+			if($val['mobile']){
+				$list = Db::name("Member")->field('id')->where(array('mobile'=>$val['mobile'],'status'=>0))->find();
+				if($list){
+					continue;
+				}
+			}
+
+		    $list = Db::name("AdminMember")->field('id')->where(array('username'=>$val['salesman_id']))->find();
+			unset($val['id']);
+			$val['sex'] = $val['sex']=='男'?'1':'0';
+			$val['salesman_id'] = $list['id']?$list['id']:0;
+			$val['admin_id'] = UID;
+			$val['add_time'] = time();
+			$insert[] =$val;
+		}
+		
+	
+	}
+	if($insert){
+		Db::name ( "Member" )->insertAll ( $insert );
+	}
+	return count($insert);
 }

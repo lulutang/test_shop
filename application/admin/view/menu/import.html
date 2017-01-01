@@ -25,9 +25,8 @@ function import_data(addr){
 	
     $.post('/admin/specification/import', {file: addr}, function (data) {
         if (data.code == 0) {
-            parent.layer.msg(msg, {icon: 1, time: 3000});
-            // 刷新
-            window.parent.location.reload();
+            parent.layer.msg(return_msg, {icon: 1, time: 1000});
+            window.location.reload();
         } else {
             layer.alert(data.msg);
         }

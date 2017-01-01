@@ -23,9 +23,9 @@
 <script>
 function import_data(addr){
 	
-    $.post('/admin/specification/import', {file: addr}, function (data) {
+    $.post('/admin/member/import', {file: addr}, function (data) {
         if (data.code == 0) {
-            parent.layer.msg(msg, {icon: 1, time: 3000});
+            parent.layer.msg(data.msg, {icon: 1, time: 3000});
             // 刷新
             window.parent.location.reload();
         } else {
