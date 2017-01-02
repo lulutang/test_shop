@@ -16,11 +16,11 @@
             <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>性别：</label>
             <div class="formControls col-xs-6 col-sm-6 skin-minimal">
                 <div class="radio-box">
-                    <input type="radio" name="sex" id="radio-0" value="1">
+                    <input type="radio" name="sex" id="radio-0" value="1" <?php if(isset($vo['sex']) && $vo['sex']==1){echo 'checked="checked"';}?>>
                     <label for="radio-0">男</label>
                 </div>
                 <div class="radio-box">
-                    <input type="radio" name="sex" id="radio-1" value="0">
+                    <input type="radio" name="sex" id="radio-1" value="0" <?php if(isset($vo['sex']) && $vo['sex']!=1){echo 'checked="checked"';}?>>
                     <label for="radio-1">女</label>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                 <div class="select-box">
                     <select name="department_id" class="select">
                         <option value="0" selected="selected">请选择</option>
-                        <option value="1">系统管理</option>
+                        <option value="1" <?php if($vo['department_id']==$vo['department_id']){echo 'selected="selected"';}?> >系统管理</option>
                         <option value="2">工具</option>
                         <option value="3">菜单管理</option>
                         <option value="4">规格管理</option>
@@ -90,7 +90,7 @@
             <div class="formControls col-xs-3 col-sm-9">
             <table style="width:726px;margin-left: 0 auto;">
             <tr >
-                <td><img id= "img_src_1"  style="width:133px;height:168px;" src="http://s.mysipo.com/manage/Uploads/Picture/2016-10-21/5809beb8477e8.png"></td>
+                <td><img id= "img_src_1"  style="width:133px;height:168px;" src="<?php if(!empty($vo['img_src'])){echo $vo['img_src'];}else{echo 'http://s.mysipo.com/manage/Uploads/Picture/2016-10-21/5809beb8477e8.png';} ?> "></td>
              
             </tr>
             
@@ -184,10 +184,10 @@
                  <div class="select-box">
                     <select name="blood_type" class="select">
                         <option value="0" selected="selected">请选择</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="O">O</option>
-                        <option value="AB">AB</option>
+                        <option value="A" <?php if($vo['blood_type']=='A'){echo 'selected="selected"';}?> >A</option>
+                        <option value="B" <?php if($vo['blood_type']=='B'){echo 'selected="selected"';}?>>B</option>
+                        <option value="O" <?php if($vo['blood_type']=='O'){echo 'selected="selected"';}?>>O</option>
+                        <option value="AB" <?php if($vo['blood_type']=='AB'){echo 'selected="selected"';}?>>AB</option>
                    </select>
                  
                 </div>
@@ -201,10 +201,10 @@
                <div class="select-box">
                     <select name="highest_degree" class="select">
                         <option value="0" selected="selected">请选择</option>
-                        <option value="博士">博士</option>
-                        <option value="硕士">硕士</option>
-                        <option value="本科">本科</option>
-                        <option value="大专">大专</option>
+                        <option value="博士" <?php if($vo['highest_degree']=='博士'){echo 'selected="selected"';}?>>博士</option>
+                        <option value="硕士" <?php if($vo['highest_degree']=='硕士'){echo 'selected="selected"';}?>>硕士</option>
+                        <option value="本科" <?php if($vo['highest_degree']=='本科'){echo 'selected="selected"';}?>>本科</option>
+                        <option value="大专" <?php if($vo['highest_degree']=='大专'){echo 'selected="selected"';}?>>大专</option>
                    </select>
                  
                 </div>
@@ -216,11 +216,11 @@
             <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>婚姻状况：</label>
             <div class="formControls col-xs-6 col-sm-6 skin-minimal">
                 <div class="radio-box">
-                    <input type="radio" name="marital_status" id="radio-0" value="1">
+                    <input type="radio" name="marital_status" id="radio-0" value="1" <?php if(isset($vo['marital_status']) && $vo['marital_status']==1){echo 'checked="checked"';}?>>
                     <label for="radio-0">单身</label>
                 </div>
                 <div class="radio-box">
-                    <input type="radio" name="marital_status" id="radio-1" value="0">
+                    <input type="radio" name="marital_status" id="radio-1" value="0" <?php if(isset($vo['marital_status']) && $vo['marital_status']!=1){echo 'checked="checked"';}?>>
                     <label for="radio-1">已婚</label>
                 </div>
             </div>
@@ -236,27 +236,16 @@
             <div class="formControls col-xs-6 col-sm-12">
                <table class="table table-border table-bordered table-hover table-bg mt-20">
                <tr><th width="25">任职时间</th><th width="25">公司名称</th><th width="25">职位</th><th width="25">收入</th><th width="25">离职原因</th><th width="25">证明人及电话</th></tr>
-               <tr><td><input type="text" class="input-text" value="{$vo.rz_time ?? ''}" placeholder="" name="rz_time[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.corporate_name ?? ''}" placeholder="" name="corporate_name[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.sposition ?? ''}" placeholder="" name="sposition[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.money ?? ''}" placeholder="" name="money[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.reasons ?? ''}" placeholder="" name="reasons[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.zm_name ?? ''}" placeholder="" name="zm_name[]" ></td>
+              {volist name="curricum" id="v"}
+              <input type="hidden" class="input-text" value="{$v.rz_time ?? ''}" placeholder="" name="rz_ids[]" value="{$v.id ?? ''}">
+               <tr><td><input type="text" class="input-text" value="{$v.rz_time ?? ''}" placeholder="" name="rz_time[]" ></td>
+               <td><input type="text" class="input-text" value="{$v.corporate_name ?? ''}" placeholder="" name="corporate_name[]" ></td>
+               <td><input type="text" class="input-text" value="{$v.sposition ?? ''}" placeholder="" name="sposition[]" ></td>
+               <td><input type="text" class="input-text" value="{$v.money ?? ''}" placeholder="" name="money[]" ></td>
+               <td><input type="text" class="input-text" value="{$v.reasons ?? ''}" placeholder="" name="reasons[]" ></td>
+               <td><input type="text" class="input-text" value="{$v.zm_name ?? ''}" placeholder="" name="zm_name[]" ></td>
                </tr>
-                <tr><td><input type="text" class="input-text" value="{$vo.rz_time ?? ''}" placeholder="" name="rz_time[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.corporate_name ?? ''}" placeholder="" name="corporate_name[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.sposition ?? ''}" placeholder="" name="sposition[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.money ?? ''}" placeholder="" name="money[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.reasons ?? ''}" placeholder="" name="reasons[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.zm_name ?? ''}" placeholder="" name="zm_name[]" ></td>
-               </tr>
-                <tr><td><input type="text" class="input-text" value="{$vo.rz_time ?? ''}" placeholder="" name="rz_time[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.corporate_name ?? ''}" placeholder="" name="corporate_name[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.sposition ?? ''}" placeholder="" name="sposition[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.money ?? ''}" placeholder="" name="money[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.reasons ?? ''}" placeholder="" name="reasons[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.zm_name ?? ''}" placeholder="" name="zm_name[]" ></td>
-               </tr>
+                {/volist}
                </table>
             </div>
             <div class="col-xs-3 col-sm-3"></div>
@@ -273,20 +262,17 @@
             <div class="formControls col-xs-6 col-sm-12">
                <table class="table table-border table-bordered table-hover table-bg mt-20">
                <tr><th width="25" >就读时间</th><th width="25" >学校名称</th><th width="25">专业</th><th width="25">就学形式</th><th width="25">是否毕业</th><th width="25">学位</th></tr>
-               <tr><td><input type="text" class="input-text" value="{$vo.etime ?? ''}" placeholder="" name="etime[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.ename ?? ''}" placeholder="" name="ename[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.zhuanye ?? ''}" placeholder="" name="zhuanye[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.type ?? ''}" placeholder="" name="type[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.is_biye ?? ''}" placeholder="" name="is_biye[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.xuewei ?? ''}" placeholder="" name="xuewei[]" ></td>
+               {volist name="education" id="v1"}
+               <input type="hidden" class="input-text" value="{$v1.id ?? ''}" placeholder="" name="e_ids[]" value="{$v1.id ?? ''}">
+               
+               <tr><td><input type="text" class="input-text" value="{$v1.etime ?? ''}" placeholder="" name="etime[]" ></td>
+               <td><input type="text" class="input-text" value="{$v1.ename ?? ''}" placeholder="" name="ename[]" ></td>
+               <td><input type="text" class="input-text" value="{$v1.zhuanye ?? ''}" placeholder="" name="zhuanye[]" ></td>
+               <td><input type="text" class="input-text" value="{$v1.type ?? ''}" placeholder="" name="type[]" ></td>
+               <td><input type="text" class="input-text" value="{$v1.is_biye ?? ''}" placeholder="" name="is_biye[]" ></td>
+               <td><input type="text" class="input-text" value="{$v1.xuewei ?? ''}" placeholder="" name="xuewei[]" ></td>
                </tr>
-               <tr><td><input type="text" class="input-text" value="{$vo.etime ?? ''}" placeholder="" name="etime[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.ename ?? ''}" placeholder="" name="ename[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.zhuanye ?? ''}" placeholder="" name="zhuanye[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.type ?? ''}" placeholder="" name="type[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.is_biye ?? ''}" placeholder="" name="is_biye[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.xuewei ?? ''}" placeholder="" name="xuewei[]" ></td>
-               </tr>
+                {/volist}
              
                </table>
             </div>
@@ -303,18 +289,16 @@
             <div class="formControls col-xs-6 col-sm-12">
                <table class="table table-border table-bordered table-hover table-bg mt-20">
                <tr><th>姓名</th><th>关系</th><th>性别</th><th>年龄</th><th>联系电话</th></tr>
-               <tr><td><input type="text" class="input-text" value="{$vo.fname ?? ''}" placeholder="" name="fname[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.guanxi ?? ''}" placeholder="" name="guanxi[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.fsex ?? ''}" placeholder="" name="fsex[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.fage ?? ''}" placeholder="" name="fage[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.fmobile ?? ''}" placeholder="" name="fmobile[]" ></td>
+              {volist name="family" id="v3"}
+               <input type="hidden" class="input-text" value="{$v3.id ?? ''}" placeholder="" name="f_ids[]" value="{$v3.id ?? ''}">
+              
+               <tr><td><input type="text" class="input-text" value="{$v3.fname ?? ''}" placeholder="" name="fname[]" ></td>
+               <td><input type="text" class="input-text" value="{$v3.guanxi ?? ''}" placeholder="" name="guanxi[]" ></td>
+               <td><input type="text" class="input-text" value="{$v3.fsex ?? ''}" placeholder="" name="fsex[]" ></td>
+               <td><input type="text" class="input-text" value="{$v3.fage ?? ''}" placeholder="" name="fage[]" ></td>
+               <td><input type="text" class="input-text" value="{$v3.fmobile ?? ''}" placeholder="" name="fmobile[]" ></td>
                </tr>
-                <tr><td><input type="text" class="input-text" value="{$vo.fname ?? ''}" placeholder="" name="fname[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.guanxi ?? ''}" placeholder="" name="guanxi[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.fsex ?? ''}" placeholder="" name="fsex[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.fage ?? ''}" placeholder="" name="fage[]" ></td>
-               <td><input type="text" class="input-text" value="{$vo.fmobile ?? ''}" placeholder="" name="fmobile[]" ></td>
-               </tr>
+                {/volist}
               
                </table>
             </div>
