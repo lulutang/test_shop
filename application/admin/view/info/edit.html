@@ -4,59 +4,330 @@
     <form class="form form-horizontal" id="form" method="post" action="{:\\think\\Request::instance()->baseUrl()}">
         <input type="hidden" name="id" value="{$vo.id ?? ''}">
         <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>分组名称：</label>
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>姓名：</label>
             <div class="formControls col-xs-6 col-sm-6">
-                <input type="text" class="input-text" value="{$vo.name ?? ''}" placeholder="" name="name"
-                       datatype="*" nullmsg="请填写分组名称">
+                <input type="text" class="input-text" value="{$vo.username ?? ''}" placeholder="" name="username"
+                       datatype="*" nullmsg="请填写员工名称">
             </div>
             <div class="col-xs-3 col-sm-3"></div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-3">图标：</label>
-            <div class="formControls col-xs-6 col-sm-6">
-                <input type="text" class="input-text" value="{:isset($vo.icon) ? htmlspecialchars($vo.icon) : ''}"
-                       placeholder="不填先默认为列表图标" name="icon">
-            </div>
-            <div class="col-xs-3 col-sm-3"></div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-3"></label>
-            <div class="formControls col-xs-6 col-sm-6">
-                小图标请到<a class="c-blue" href="http://h-ui.net/Hui-3.7-Hui-iconfont.shtml" target="_blank" rel="nofollow">http://h-ui.net/Hui-3.7-Hui-iconfont.shtml</a>复制tab标签为阿里巴巴Iconfont下的icon文字，如
-                <span class="label label-success f-16">{:htmlspecialchars('&#xf0005;')}</span>
-            </div>
-            <div class="col-xs-3 col-sm-3"></div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>排序：</label>
-            <div class="formControls col-xs-6 col-sm-6">
-                <input type="number" class="input-text" value="{$vo.sort ?? '50'}" placeholder=""
-                       name="sort" datatype="*" nullmsg="请填写排序">
-            </div>
-            <div class="col-xs-3 col-sm-3"></div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>状态：</label>
+        
+         <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>性别：</label>
             <div class="formControls col-xs-6 col-sm-6 skin-minimal">
                 <div class="radio-box">
-                    <input type="radio" name="status" id="radio-0" value="1">
-                    <label for="radio-0">启用</label>
+                    <input type="radio" name="sex" id="radio-0" value="1">
+                    <label for="radio-0">男</label>
                 </div>
                 <div class="radio-box">
-                    <input type="radio" name="status" id="radio-1" value="0">
-                    <label for="radio-1">禁用</label>
+                    <input type="radio" name="sex" id="radio-1" value="0">
+                    <label for="radio-1">女</label>
                 </div>
             </div>
             <div class="col-xs-3 col-sm-3"></div>
         </div>
+        
+          <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>部门：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <div class="select-box">
+                    <select name="department_id" class="select">
+                        <option value="0" selected="selected">请选择</option>
+                        <option value="1">系统管理</option>
+                        <option value="2">工具</option>
+                        <option value="3">菜单管理</option>
+                        <option value="4">规格管理</option>
+                   </select>
+                 
+                </div>
+                      
+                  导入部门
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+          <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>职位：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.position ?? ''}" placeholder="" name="position"
+                       datatype="*" nullmsg="请填写职位">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+        
+          <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>个人业绩：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.achievement ?? ''}" placeholder="" name="achievement"
+                       datatype="*" nullmsg="请填写个人业绩">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+          <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>手机号码：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.mobile ?? ''}" placeholder="" name="mobile"
+                       datatype="*" nullmsg="请填写手机号码">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+         <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>紧急联系人号码：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.first_contact ?? ''}" placeholder="" name="first_contact"
+                       datatype="*" nullmsg="请填写紧急联系人号码">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+        
+        
+        
         <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>员工照片：</label>
+            <div class="formControls col-xs-3 col-sm-9">
+            <table style="width:726px;margin-left: 0 auto;">
+            <tr >
+                <td><img id= "img_src_1"  style="width:133px;height:168px;" src="http://s.mysipo.com/manage/Uploads/Picture/2016-10-21/5809beb8477e8.png"></td>
+             
+            </tr>
+            
+            <input type="hidden" id="upload_1" name="img_src" value="" >
+           
+            
+            <tr class="col-xs-3 col-sm-3"></tr>
+            <tr  class="text-c">
+                <td><button type="button" class="btn btn-primary radius " onclick="layer_open('文件上传','/admin/upload/index/id/img_src_1.html')">图片上传</button></td>
+              
+            </tr>
+             <tr class="col-xs-3 col-sm-3"></tr>
+            <tr  class="text-c">
+                <td><button type="button" class="btn btn-danger radius " onclick="del_path(1)">清理图片</button></td>
+              
+            </tr>
+            
+            </table>
+         
+            
+            
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+      
+       <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>籍贯：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.place_origin ?? ''}" placeholder="" name="place_origin"
+                       datatype="*" nullmsg="请填写籍贯">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+       <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>家庭住址：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.address ?? ''}" placeholder="" name="address"
+                       datatype="*" nullmsg="请填写家庭住址">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>户籍地址：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.registry ?? ''}" placeholder="" name="registry"
+                       datatype="*" nullmsg="请填写户籍地址">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+         <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>身份证号：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.idcard ?? ''}" placeholder="" name="idcard"
+                       datatype="*" nullmsg="请填写身份证号">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>出生日期：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.specific_date ?? ''}" placeholder="" name="specific_date"
+                       datatype="*" nullmsg="请填写出生日期">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>年龄：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.age ?? ''}" placeholder="" name="age"
+                       datatype="*" nullmsg="请填写年龄">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>民族：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" value="{$vo.nation ?? ''}" placeholder="" name="nation"
+                       datatype="*" nullmsg="请填写民族">
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>血型：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                 <div class="select-box">
+                    <select name="blood_type" class="select">
+                        <option value="0" selected="selected">请选择</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="O">O</option>
+                        <option value="AB">AB</option>
+                   </select>
+                 
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+         <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>最高学历：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+               <div class="select-box">
+                    <select name="highest_degree" class="select">
+                        <option value="0" selected="selected">请选择</option>
+                        <option value="博士">博士</option>
+                        <option value="硕士">硕士</option>
+                        <option value="本科">本科</option>
+                        <option value="大专">大专</option>
+                   </select>
+                 
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+         <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>婚姻状况：</label>
+            <div class="formControls col-xs-6 col-sm-6 skin-minimal">
+                <div class="radio-box">
+                    <input type="radio" name="marital_status" id="radio-0" value="1">
+                    <label for="radio-0">单身</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" name="marital_status" id="radio-1" value="0">
+                    <label for="radio-1">已婚</label>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+         <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>个人简历：</label>
+            
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+         <div class="row cl">
+            <div class="formControls col-xs-6 col-sm-12">
+               <table class="table table-border table-bordered table-hover table-bg mt-20">
+               <tr><th width="25">任职时间</th><th width="25">公司名称</th><th width="25">职位</th><th width="25">收入</th><th width="25">离职原因</th><th width="25">证明人及电话</th></tr>
+               <tr><td><input type="text" class="input-text" value="{$vo.rz_time ?? ''}" placeholder="" name="rz_time[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.corporate_name ?? ''}" placeholder="" name="corporate_name[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.sposition ?? ''}" placeholder="" name="sposition[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.money ?? ''}" placeholder="" name="money[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.reasons ?? ''}" placeholder="" name="reasons[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.zm_name ?? ''}" placeholder="" name="zm_name[]" ></td>
+               </tr>
+                <tr><td><input type="text" class="input-text" value="{$vo.rz_time ?? ''}" placeholder="" name="rz_time[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.corporate_name ?? ''}" placeholder="" name="corporate_name[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.sposition ?? ''}" placeholder="" name="sposition[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.money ?? ''}" placeholder="" name="money[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.reasons ?? ''}" placeholder="" name="reasons[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.zm_name ?? ''}" placeholder="" name="zm_name[]" ></td>
+               </tr>
+                <tr><td><input type="text" class="input-text" value="{$vo.rz_time ?? ''}" placeholder="" name="rz_time[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.corporate_name ?? ''}" placeholder="" name="corporate_name[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.sposition ?? ''}" placeholder="" name="sposition[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.money ?? ''}" placeholder="" name="money[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.reasons ?? ''}" placeholder="" name="reasons[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.zm_name ?? ''}" placeholder="" name="zm_name[]" ></td>
+               </tr>
+               </table>
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+         <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>个人教育经历：</label>
+           
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+        
+        <div class="row cl">
+            <div class="formControls col-xs-6 col-sm-12">
+               <table class="table table-border table-bordered table-hover table-bg mt-20">
+               <tr><th width="25" >就读时间</th><th width="25" >学校名称</th><th width="25">专业</th><th width="25">就学形式</th><th width="25">是否毕业</th><th width="25">学位</th></tr>
+               <tr><td><input type="text" class="input-text" value="{$vo.etime ?? ''}" placeholder="" name="etime[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.ename ?? ''}" placeholder="" name="ename[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.zhuanye ?? ''}" placeholder="" name="zhuanye[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.type ?? ''}" placeholder="" name="type[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.is_biye ?? ''}" placeholder="" name="is_biye[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.xuewei ?? ''}" placeholder="" name="xuewei[]" ></td>
+               </tr>
+               <tr><td><input type="text" class="input-text" value="{$vo.etime ?? ''}" placeholder="" name="etime[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.ename ?? ''}" placeholder="" name="ename[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.zhuanye ?? ''}" placeholder="" name="zhuanye[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.type ?? ''}" placeholder="" name="type[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.is_biye ?? ''}" placeholder="" name="is_biye[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.xuewei ?? ''}" placeholder="" name="xuewei[]" ></td>
+               </tr>
+             
+               </table>
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+         <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>家庭情况：</label>
+           
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+        
+         
+        <div class="row cl">
+            <div class="formControls col-xs-6 col-sm-12">
+               <table class="table table-border table-bordered table-hover table-bg mt-20">
+               <tr><th>姓名</th><th>关系</th><th>性别</th><th>年龄</th><th>联系电话</th></tr>
+               <tr><td><input type="text" class="input-text" value="{$vo.fname ?? ''}" placeholder="" name="fname[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.guanxi ?? ''}" placeholder="" name="guanxi[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.fsex ?? ''}" placeholder="" name="fsex[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.fage ?? ''}" placeholder="" name="fage[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.fmobile ?? ''}" placeholder="" name="fmobile[]" ></td>
+               </tr>
+                <tr><td><input type="text" class="input-text" value="{$vo.fname ?? ''}" placeholder="" name="fname[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.guanxi ?? ''}" placeholder="" name="guanxi[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.fsex ?? ''}" placeholder="" name="fsex[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.fage ?? ''}" placeholder="" name="fage[]" ></td>
+               <td><input type="text" class="input-text" value="{$vo.fmobile ?? ''}" placeholder="" name="fmobile[]" ></td>
+               </tr>
+              
+               </table>
+            </div>
+            <div class="col-xs-3 col-sm-3"></div>
+        </div>
+       <!--  <div class="row cl">
             <label class="form-label col-xs-3 col-sm-3">备注：</label>
             <div class="formControls col-xs-6 col-sm-6">
                 <textarea class="textarea" placeholder="备注" name="remark" onKeyUp="textarealength(this, 100)">{$vo.remark ?? ''}</textarea>
                 <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
             </div>
             <div class="col-xs-3 col-sm-3"></div>
-        </div>
+        </div> -->
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
                 <button type="submit" class="btn btn-primary radius">&nbsp;&nbsp;提交&nbsp;&nbsp;</button>
@@ -87,5 +358,11 @@
             }
         });
     })
+    
+    function del_path(id){
+    	$('#img_src_'+id).attr('src','http://s.mysipo.com/manage/Uploads/Picture/2016-10-21/5809beb8477e8.png');
+    	$('#upload_'+id).attr('value','');
+
+    }
 </script>
 {/block}

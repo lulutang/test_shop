@@ -47,141 +47,137 @@ class Info
     }
 
     /**
-     * 用户登录页面
+     * 员工信息页面
      * @return mixed
      */
     public function index()
     {
-    	$this->view->assign('list', array());
-    	 
-    	$this->view->assign('page', '');
-    	 
-        $this->view->assign('count', 0); 
+    	$name = $this->request->param('username');
+    	$where = array('status' => 0);
+    	
+    	if($name){
+    		$where['username']=array('like',$name);
+    	}
+    	
+    	$list = Db::name("AdminMember")->where($where)->order('id desc')->paginate(10);
+    	$count = Db::name("AdminMember")->where($where)->count();
+    	$this->view->assign('list', $list);
+    	
+    	
+    	$this->view->assign('count', $count);
         return $this->view->fetch();
         
     }
-
+    
+        
     /**
-     * 增加菜单
+     * 查看信息
+     */
+    public function info(){
+        $id = $this->request->param('id');
+        $list = Db::name("AdminMember")->where(array('id' => $id))->find();
+        
+        $Curricum  = Db::name("AdminMemberCurricum")->where(array('mid' => $id))->select();
+        $Education = Db::name("AdminMemberEducation")->where(array('mid' => $id))->select();
+        $Family    = Db::name("AdminMemberFamily")->where(array('mid' => $id))->select();
+        
+        $this->view->assign('vo', $list);
+        $this->view->assign('curricum', $Curricum);
+        $this->view->assign('education', $Education);
+        $this->view->assign('family', $Family);
+        return $this->view->fetch();
+    }
+    
+    /**
+     * 增加员工
      */
    public function add()
    {
-   	  return $this->view->fetch();
+       
+   if ($this->request->isAjax() && $this->request->isPost()) {
+	   		 $data = $post =  $this->request->post();
+	   		
+	   		 $list = Db::name("AdminMember")->field('id')->where(array('mobile'=>$data['mobile'],'status'=>0))->find();
+	   		 if($list){
+	   		 	return ajax_return_adv('手机号已存在，请不要重复添加', '');
+	   		 }
+	   		
+	   		 // 写入数据表
+	   		
+	   		
+	   		 $data['admin_id'] = UID;
+	   		 $data['add_time'] = time();
+	   		 unset($data['rz_time']);
+	   		 unset($data['corporate_name']);
+	   		 unset($data['money']);
+	   		 unset($data['reasons']);
+	   		 unset($data['sposition']);
+	   		 unset($data['zm_name']);
+	   		 
+	   		 unset($data['etime']);
+	   		 unset($data['ename']);
+	   		 unset($data['zhuanye']);
+	   		 unset($data['type']);
+	   		 unset($data['is_biye']);
+	   		 unset($data['xuewei']);
+	   		 
+	   		 unset($data['fname']);
+	   		 unset($data['guanxi']);
+	   		 unset($data['fsex']);
+	   		 unset($data['fage']);
+	   		 unset($data['fmobile']);
+	   		  
+	   		 
+	   		 Db::name("AdminMember")->insert($data);
+	   		 $id = Db::name('AdminMember')->getLastInsID();
+	   		 if($id){
+	   		     for ($i=0;$i<3;$i++){
+	   		     	$curricum[$i]['rz_time']        = $post['rz_time'][$i];
+	   		     	$curricum[$i]['corporate_name'] = $post['corporate_name'][$i];
+	   		     	$curricum[$i]['money']          = $post['money'][$i];
+	   		     	$curricum[$i]['reasons']        = $post['reasons'][$i];
+	   		     	$curricum[$i]['zm_name']        = $post['zm_name'][$i];
+	   		     	$curricum[$i]['sposition']       = $post['sposition'][$i];
+	   		     	$curricum[$i]['add_time']       = time();
+	   		     	$curricum[$i]['mid']            = $id;
+	   		     	
+	   		     }
+	   		     
+	   		     for ($i=0;$i<2;$i++){
+	   		     	$education[$i]['etime']        = $post['etime'][$i];
+	   		     	$education[$i]['ename']        = $post['ename'][$i];
+	   		     	$education[$i]['zhuanye']      = $post['zhuanye'][$i];
+	   		     	$education[$i]['type']         = $post['type'][$i];
+	   		     	$education[$i]['is_biye']      = $post['is_biye'][$i];
+	   		     	$education[$i]['xuewei']       = $post['xuewei'][$i];
+	   		     	$education[$i]['add_time']     = time();
+	   		     	$education[$i]['mid']          = $id;
+	   		     }
+	   		      
+	   		     for ($i=0;$i<2;$i++){
+	   		     	$family[$i]['fname']        = $post['fname'][$i];
+	   		     	$family[$i]['guanxi']       = $post['guanxi'][$i];
+	   		     	$family[$i]['fsex']         = $post['fsex'][$i];
+	   		     	$family[$i]['fage']         = $post['fage'][$i];
+	   		     	$family[$i]['fmobile']      = $post['fmobile'][$i];
+	   		     	$family[$i]['add_time']     = time();
+	   		     	$family[$i]['mid']          = $id;
+	   		     }
+	   		     $id_c = Db::name("AdminMemberCurricum")->insertAll($curricum);
+	   		     $id_c = Db::name("AdminMemberEducation")->insertAll($education);
+	   		     $id_f = Db::name("AdminMemberFamily")->insertAll($family);
+	   		 	return ajax_return_adv('增加成功', 'parent');
+	   		 }else{
+	   		 	return ajax_return_adv('增加失败，请重试', '');	   		 	
+	   		 }
+	   		 
+	   	}else{
+	   		$member = Db::name('AdminMember')->where(array('id'=>0))->select();
+	   		return $this->view->fetch();
+	   		 
+	   	}
    }
 
 
-    /**
-     * 登录检测
-     * @return \think\response\Json
-     */
-    public function checkLogin()
-    {
-        if ($this->request->isAjax() && $this->request->isPost()) {
-            $data = $this->request->post();
-            $validate = Loader::validate('Pub');
-            if (!$validate->scene('login')->check($data)) {
-                return ajax_return_adv_error($validate->getError());
-            }
-
-            $map['account'] = $data['account'];
-            $map['status'] = 1;
-            $auth_info = \Rbac::authenticate($map);
-
-            // 使用用户名、密码和状态的方式进行认证
-            if (null === $auth_info) {
-                return ajax_return_adv_error('帐号不存在或已禁用！');
-            } else {
-                if ($auth_info['password'] != password_hash_tp($data['password'])) {
-                    return ajax_return_adv_error('密码错误！');
-                }
-
-                // 生成session信息
-                Session::set(Config::get('rbac.user_auth_key'), $auth_info['id']);
-                Session::set('user_name', $auth_info['account']);
-                Session::set('real_name', $auth_info['realname']);
-                Session::set('last_login_ip', $auth_info['last_login_ip']);
-                Session::set('last_login_time', $auth_info['last_login_time']);
-
-                // 超级管理员标记
-                if ($auth_info['id'] == 1) {
-                    Session::set(Config::get('rbac.admin_auth_key'), true);
-                }
-
-                // 保存登录信息
-                $update['last_login_time'] = time();
-                $update['login_count'] = ['exp', 'login_count+1'];
-                $update['last_login_ip'] = $this->request->ip();
-                Db::name("AdminUser")->where('id', $auth_info['id'])->update($update);
-
-                // 记录登录日志
-                $log['uid'] = $auth_info['id'];
-                $log['login_ip'] = $this->request->ip();
-                $log['login_location'] = implode(" ", \Ip::find($log['login_ip']));
-                $log['login_browser'] = \Agent::getBroswer();
-                $log['login_os'] = \Agent::getOs();
-                Db::name("LoginLog")->insert($log);
-
-                // 缓存访问权限
-                \Rbac::saveAccessList();
-
-                return ajax_return_adv('登录成功！', '');
-            }
-        } else {
-            throw new Exception("非法请求");
-        }
-    }
-
-    /**
-     * 修改密码
-     */
-    public function password()
-    {
-        $this->checkUser();
-        if ($this->request->isPost()) {
-            $data = $this->request->post();
-            // 数据校验
-            $validate = Loader::validate('Pub');
-            if (!$validate->scene('password')->check($data)) {
-                return ajax_return_adv_error($validate->getError());
-            }
-
-            // 查询旧密码进行比对
-            $info = Db::name("AdminUser")->where("id", UID)->field("password")->find();
-            if ($info['password'] != password_hash_tp($data['oldpassword'])) {
-                return ajax_return_adv_error("旧密码错误");
-            }
-
-            // 写入新密码
-            if (false === Loader::model('AdminUser')->updatePassword(UID, $data['password'])) {
-                return ajax_return_adv_error("密码修改失败");
-            }
-
-            return ajax_return_adv("密码修改成功", '');
-        } else {
-            return $this->view->fetch();
-        }
-    }
-
-    /**
-     * 查看用户信息|修改资料
-     */
-    public function profile()
-    {
-        $this->checkUser();
-        if ($this->request->isPost()) {
-            // 修改资料
-            $data = $this->request->only(['realname', 'email', 'mobile', 'remark'], 'post');
-            if (Db::name("AdminUser")->where("id", UID)->update($data) === false) {
-                return ajax_return_adv_error("信息修改失败");
-            }
-
-            return ajax_return_adv("信息修改成功", '');
-        } else {
-            // 查看用户信息
-            $vo = Db::name("AdminUser")->field('realname,email,mobile,remark')->where("id", UID)->find();
-            $this->view->assign('vo', $vo);
-
-            return $this->view->fetch();
-        }
-    }
+   
 }

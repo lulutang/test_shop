@@ -133,11 +133,31 @@ class Tp extends Taglib
                     list($url, $param) = $this->parseUrl($url, 'id=$vo["id"]');
                     $parseStr .= ' <a title="' . $title . '" href="javascript:;" onclick="layer_open(\'' . $title . '\',\'<?php echo \think\Url::build(\'' . $url . '\', [' . $param . ']); ?>\')" style="text-decoration:none" class="ml-5"><i class="Hui-iconfont">&#xe6df;</i></a>';
                     break;
+                case 'ssedit':
+                    $title = isset($titleArr[$k]) && $titleArr[$k] ? $titleArr[$k] : '编辑';
+                    list($url, $param) = $this->parseUrl($url, 'id=$v["id"]');
+                    $parseStr .= ' <a title="' . $title . '" href="javascript:;" onclick="layer_open(\'' . $title . '\',\'<?php echo \think\Url::build(\'' . $url . '\', [' . $param . ']); ?>\')" style="text-decoration:none" class="ml-5"><i class="Hui-iconfont">&#xe6df;</i></a>';
+                    break;
+                    case 'sssedit':
+                    	$title = isset($titleArr[$k]) && $titleArr[$k] ? $titleArr[$k] : '编辑';
+                    	list($url, $param) = $this->parseUrl($url, 'id=$vs["id"]');
+                    	$parseStr .= ' <a title="' . $title . '" href="javascript:;" onclick="layer_open(\'' . $title . '\',\'<?php echo \think\Url::build(\'' . $url . '\', [' . $param . ']); ?>\')" style="text-decoration:none" class="ml-5"><i class="Hui-iconfont">&#xe6df;</i></a>';
+                    	break;
                 case 'sdelete':
                     $title = isset($titleArr[$k]) && $titleArr[$k] ? $titleArr[$k] : '删除';
                     list($url, $param) = $this->parseUrl($url);
                     $parseStr .= ' <a title="' . $title . '" href="javascript:;" onclick="del(this,\'{$vo.id}\',\'<?php echo \think\Url::build(\'' . $url . '\', [' . $param . ']); ?>\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
                     break;
+                case 'ssdelete':
+                    $title = isset($titleArr[$k]) && $titleArr[$k] ? $titleArr[$k] : '删除';
+                    list($url, $param) = $this->parseUrl($url);
+                    $parseStr .= ' <a title="' . $title . '" href="javascript:;" onclick="del(this,\'{$v.id}\',\'<?php echo \think\Url::build(\'' . $url . '\', [' . $param . ']); ?>\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+                    break;
+                    case 'sssdelete':
+                    	$title = isset($titleArr[$k]) && $titleArr[$k] ? $titleArr[$k] : '删除';
+                    	list($url, $param) = $this->parseUrl($url);
+                    	$parseStr .= ' <a title="' . $title . '" href="javascript:;" onclick="del(this,\'{$vs.id}\',\'<?php echo \think\Url::build(\'' . $url . '\', [' . $param . ']); ?>\')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+                    	break;
                 case 'srecycle':
                     $title = isset($titleArr[$k]) && $titleArr[$k] ? $titleArr[$k] : '还原';
                     list($url, $param) = $this->parseUrl($url);
@@ -156,10 +176,18 @@ class Tp extends Taglib
                 	$class = isset($tag['class']) ? $tag['class'] : 'label-primary';
                 	$parseStr .= ' <a title="' . $title . '" href="javascript:;" onclick="layer_open(\'' . $title . '\',\'<?php echo \think\Url::build(\'' . $url . '\', [' . $param . ']); ?>\')" class="label radius ml-5 ' . $class . '">' . $title . '</a>';
                 	break;
-                	case 'sadd':
+                 case 'sadd':
+                	// 增加
+                	$title = '增加';
+                	list($url, $param) = $this->parseUrl($url, 'id=$vo["id"]');
+                		 
+                	$class = isset($tag['class']) ? $tag['class'] : 'label-primary';
+                	$parseStr .= ' <a title="' . $title . '" href="javascript:;" onclick="layer_open(\'' . $title . '\',\'<?php echo \think\Url::build(\'' . $url . '\', [' . $param . ']); ?>\')" class="label radius ml-5 ' . $class . '">' . $title . '</a>';
+                	break;
+                	case 'ssadd':
                 		// 增加
                 		$title = '增加';
-                		list($url, $param) = $this->parseUrl($url, 'id=$vo["id"]');
+                		list($url, $param) = $this->parseUrl($url, 'id=$v["id"]');
                 		 
                 		$class = isset($tag['class']) ? $tag['class'] : 'label-primary';
                 		$parseStr .= ' <a title="' . $title . '" href="javascript:;" onclick="layer_open(\'' . $title . '\',\'<?php echo \think\Url::build(\'' . $url . '\', [' . $param . ']); ?>\')" class="label radius ml-5 ' . $class . '">' . $title . '</a>';

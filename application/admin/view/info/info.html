@@ -16,11 +16,11 @@
             <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>性别：</label>
             <div class="formControls col-xs-6 col-sm-6 skin-minimal">
                 <div class="radio-box">
-                    <input type="radio" name="sex" id="radio-0" value="1">
+                    <input type="radio" name="sex" id="radio-0" value="1" <?php if(isset($vo['sex']) && $vo['sex']==1){echo 'checked="checked"';}?> >
                     <label for="radio-0">男</label>
                 </div>
                 <div class="radio-box">
-                    <input type="radio" name="sex" id="radio-1" value="0">
+                    <input type="radio" name="sex" id="radio-1" value="0" <?php if(isset($vo['sex']) && $vo['sex']!=1){echo 'checked="checked"';}?> >
                     <label for="radio-1">女</label>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                 <div class="select-box">
                     <select name="department_id" class="select">
                         <option value="0" selected="selected">请选择</option>
-                        <option value="1">系统管理</option>
+                        <option value="1" <?php if($vo['department_id']==$vo['department_id']){echo 'selected="selected"';}?> >系统管理</option>
                         <option value="2">工具</option>
                         <option value="3">菜单管理</option>
                         <option value="4">规格管理</option>

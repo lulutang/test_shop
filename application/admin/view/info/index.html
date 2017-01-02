@@ -22,14 +22,15 @@
         <tr class="text-c">
             {include file="td" /}
             <td class="f-14">
-                {$vo.status|show_status=$vo.id}
+            <a title="查看" href="javascript:;" onclick="layer_open('查看','/admin/info/info/id/{$vo.id}.html')" style="text-decoration:none" class="ml-5"><i class="Hui-iconfont"> 查看</i></a>
+               
                 {tp:menu menu='sedit,sdelete' /}
             </td>
         </tr>
         {/volist}
         </tbody>
     </table>
-    <div class="page-bootstrap">{$page}</div>
+    <div class="page-bootstrap">{$list->render()}</div>
 </div>
 {/block}
 {block name='script'}}

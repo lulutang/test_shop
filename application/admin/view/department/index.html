@@ -29,6 +29,16 @@
             {include file="tder" /}
           
         </tr>
+	         <?php if(isset($v['sanji'])){?>
+	           {volist name="v.sanji" id="vs"}
+	        <tr class="text-c dingji_{$vo.id}_{$vo.id}">
+	            {include file="tdsan" /}
+	          
+	        </tr>
+	        {/volist}
+	        <?php }?>
+        
+        
         {/volist}
         <?php }?>
         {/volist}
@@ -40,12 +50,12 @@
 {block name='script'}}
 <script>
 function dingji(id){
-	$('.dingji_'+id).html('<a  data-title="一级菜单" href="javascript:zhankai({$vo.id});"><b class="dingji_'+id+'">-</b></a>');
+	$('.dingji_'+id).html('<a  data-title="一级菜单" href="javascript:zhankai('+id+');"><b class="dingji_'+id+'">-</b></a>');
 	$('.dingji_'+id+'_'+id).hide();
 }
 
 function zhankai(id){
-	$('.dingji_'+id).html('<a  data-title="一级菜单" href="javascript:dingji({$vo.id});"><b class="dingji_'+id+'">+</b></a>');
+	$('.dingji_'+id).html('<a  data-title="一级菜单" href="javascript:dingji('+id+');"><b class="dingji_'+id+'">+</b></a>');
 	$('.dingji_'+id+'_'+id).show();
 }
 </script>
