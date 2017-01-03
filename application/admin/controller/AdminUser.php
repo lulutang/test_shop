@@ -19,6 +19,7 @@ namespace app\admin\controller;
 use app\admin\Controller;
 use think\Exception;
 use think\Loader;
+use think\Db;
 
 class AdminUser extends Controller
 {
@@ -45,6 +46,31 @@ class AdminUser extends Controller
         }
     }
 
+    /**
+     * 
+     * @return string
+     */
+    public function add(){
+        if ($this->request->isAjax() && $this->request->isPost()) {
+            $post = $this->request->post();
+            $res = Db::name("AdminUser")->field('account')->where(array('account' => $post['account']))->find();
+            if($res){
+                return ajax_return_adv_error("登录名称重复");
+            }
+            if($post['password'] != $post['repassword']){
+            	return ajax_return_adv_error("密码输入2次不一致");
+            }
+            
+            dump($post);die;
+        }else{
+
+            $dep = Db::name("ViewAdminDepartment")->field('title,id')->where('pid=0')->order("id desc")->select();
+            $this->view->assign('dep', $dep);
+            return $this->view->fetch();
+        }
+
+    }
+    
     /**
      * 修改密码
      */

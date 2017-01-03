@@ -102,6 +102,7 @@ function high_light($string, $needle = '', $class = 'c-red')
  */
 function show_status($status, $id, $field = 'id', $controller = '')
 {
+    $ret = '';
     $controller === '' && $controller = Request::instance()->controller();
     switch ($status) {
         // 恢复
@@ -546,4 +547,14 @@ function import_admin_member($data){
 function getDepartmentId($id){
     $dep = Db::name("ViewAdminDepartment")->field('title,id')->where('id='.$id)->find();
     return $dep['title'];
+}
+
+function getRole($id){
+    $rel = Db::name("AdminRoleUser")->where('user_id='.$id)->select();
+    $title = '';
+    foreach ($rel as $val){
+        $rel = Db::name("AdminRole")->field('name')->where('id='.$val['role_id'])->find();
+        $title .= $rel['name'].',';
+    }
+    return substr($title, 0,strlen($title)-1);
 }
