@@ -33,15 +33,14 @@
                 <div class="select-box">
                     <select name="department_id" class="select">
                         <option value="0" selected="selected">请选择</option>
-                        <option value="1">系统管理</option>
-                        <option value="2">工具</option>
-                        <option value="3">菜单管理</option>
-                        <option value="4">规格管理</option>
+                          {volist name="dep" id="vo1"}
+					         <option value="{$vo1.id}">{$vo1.title}</option>
+					      {/volist}
                    </select>
                  
                 </div>
                       
-                  导入部门
+                  
             </div>
             <div class="col-xs-3 col-sm-3"></div>
         </div>

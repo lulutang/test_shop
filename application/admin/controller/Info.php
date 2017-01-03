@@ -129,9 +129,12 @@ class Info
             unset($data['rz_ids']);
             unset($data['f_ids']);
             
-            $id = Db::name("AdminMember")->where(array('id'=>$id))->update($data);
+            $res = Db::name("AdminMember")->where(array('id'=>$id))->update($data);
            
-            if($id){
+            if($res){
+                $flag = Db::name("AdminMemberCurricum")->where(array('mid' => $id))->find();
+                
+                
             	for ($i=0;$i<3;$i++){
             		$curricum['rz_time']        = $post['rz_time'][$i];
             		$curricum['corporate_name'] = $post['corporate_name'][$i];
@@ -139,9 +142,17 @@ class Info
             		$curricum['reasons']        = $post['reasons'][$i];
             		$curricum['zm_name']        = $post['zm_name'][$i];
             		$curricum['sposition']       = $post['sposition'][$i];
-            		$id_c = Db::name("AdminMemberCurricum")->where(array('id' => $post['rz_ids'][$i]))->update($curricum);
+            		if($flag){
+            		    $id_c = Db::name("AdminMemberCurricum")->where(array('id' => $post['rz_ids'][$i]))->update($curricum);
+            		    
+            		}else{
+            		    $curricum['mid'] = $id;
+            		    $id_c = Db::name("AdminMemberCurricum")->insert($curricum);
+            		    
+            		}
             	}
-            		
+            	$flag = Db::name("AdminMemberEducation")->where(array('mid' => $id))->find();
+            	 
             	for ($i=0;$i<2;$i++){
             		$education['etime']        = $post['etime'][$i];
             		$education['ename']        = $post['ename'][$i];
@@ -149,17 +160,31 @@ class Info
             		$education['type']         = $post['type'][$i];
             		$education['is_biye']      = $post['is_biye'][$i];
             		$education['xuewei']       = $post['xuewei'][$i];
-            		$id_e = Db::name("AdminMemberEducation")->where(array('id' => $post['e_ids'][$i]))->update($education);
             		
+            		if($flag){
+            		    $id_e = Db::name("AdminMemberEducation")->where(array('id' => $post['e_ids'][$i]))->update($education);
+            		}else{
+            			$education['mid'] = $id;
+            			$id_c = Db::name("AdminMemberEducation")->insert($education);
+            		
+            		}
             	}
-            
+            	$flag = Db::name("AdminMemberFamily")->where(array('mid' => $id))->find();
+            	 
             	for ($i=0;$i<2;$i++){
             		$family['fname']        = $post['fname'][$i];
             		$family['guanxi']       = $post['guanxi'][$i];
             		$family['fsex']         = $post['fsex'][$i];
             		$family['fage']         = $post['fage'][$i];
             		$family['fmobile']      = $post['fmobile'][$i];
-            		$id_f = Db::name("AdminMemberFamily")->where(array('id' => $post['f_ids'][$i]))->update($family);
+            		
+            		if($flag){
+            		    $id_f = Db::name("AdminMemberFamily")->where(array('id' => $post['f_ids'][$i]))->update($family);
+            		}else{
+            			$family['mid'] = $id;
+            			$id_c = Db::name("AdminMemberFamily")->insert($family);
+            		
+            		}
             		
             	}
             	return ajax_return_adv('修改成功', 'parent');
@@ -173,7 +198,24 @@ class Info
             $Curricum  = Db::name("AdminMemberCurricum")->where(array('mid' => $id))->select();
             $Education = Db::name("AdminMemberEducation")->where(array('mid' => $id))->select();
             $Family    = Db::name("AdminMemberFamily")->where(array('mid' => $id))->select();
+            if(!$Curricum){
+                $Curricum[]= array();
+                $Curricum[]= array();
+                $Curricum[]= array();
+            }
             
+            if(!$Education){
+            	$Education[]= array();
+            	$Education[]= array();
+            }
+            
+            if(!$Family){
+            	$Family[]= array();
+            	$Family[]= array();
+            }
+            
+            $dep = Db::name("ViewAdminDepartment")->field('title,id')->where('pid=0')->order("id desc")->select();
+            $this->view->assign('dep', $dep);
             $this->view->assign('vo', $list);
             $this->view->assign('curricum', $Curricum);
             $this->view->assign('education', $Education);
@@ -267,7 +309,10 @@ class Info
 	   		 }
 	   		 
 	   	}else{
-	   		$member = Db::name('AdminMember')->where(array('id'=>0))->select();
+	   	    
+	   	    $dep = Db::name("ViewAdminDepartment")->field('title,id')->where('pid=0')->order("id desc")->select();
+	   	    $this->view->assign('dep', $dep);
+	   	 
 	   		return $this->view->fetch();
 	   		 
 	   	}
@@ -293,6 +338,67 @@ class Info
    			return ajax_return_adv('删除失败，请重试', '');
    				
    		}
+   		 
+   	}else{
+   		return $this->view->fetch();
+   		 
+   	}
+   }
+   
+   
+   /**
+    * 导出
+    */
+   public function export(){
+   	 
+   	$header = ['员工编号', '员工姓名', '性别', '手机号', '所属部门', '职位', '个人业绩', '籍贯', '家庭住址', '户籍地址', '身份证', '民族', '血型','学历','婚姻状况'];
+   	$data = Db::name("AdminMember")->field('id,username,sex,mobile,department_id,position,achievement,place_origin,address,registry,idcard,nation,blood_type,highest_degree,marital_status')->order("id desc")->select();
+
+   	
+   	$dep = Db::name("ViewAdminDepartment")->field('title,id')->where('pid=0')->order("id desc")->select();
+   	$department =  array();
+   	foreach ($dep as $d){
+   	    $department[$d['id']] = $d['title'];
+   	}
+   	
+   	foreach ($data as &$val){
+   		if($val['sex']==1){
+   			$val['sex'] = "男";
+   		}else{
+   			$val['sex'] = "女";
+   		}
+   		if($val['marital_status']==1){
+   			$val['marital_status'] = "已婚";
+   		}else{
+   			$val['marital_status'] = "单身";
+   		}
+   		if ($val['department_id']){
+   		   $val['department_id'] = $department[$val['department_id']];
+   		}
+   	}
+   
+   	if ($error = \Excel::export($header, $data, "员工信息导出-".date('YmdHis'), '2003')) {
+   		throw new Exception($error);
+   	}
+   }
+   
+
+   /**
+    * 导入
+    */
+   public function import(){
+   	if ($this->request->isAjax() && $this->request->isPost()) {
+   		$data = $this->request->post();
+   		$file = TMP_PATH.$data['file'];
+   		$header = ['A'=>'id', 'B'=>'username', 'C'=>'sex', 'D'=>'mobile', 'E'=>'department_id', 'F'=>'position', 'G'=>'achievement', 'H'=>'place_origin', 'I'=>'address', 'J'=>'registry', 'K'=>'idcard', 'L'=>'nation', 'M'=>'blood_type', 'N'=>'highest_degree', 'O'=>'marital_status'];
+   
+   		if ($error = \Excel::parse($file, $header, "10000", 'import_admin_member')) {
+   			//throw new Exception($error);
+   			return ajax_return_adv('导入成功'.$error.'条数据', 'parent');
+   		}
+   
+   		 
+   
    		 
    	}else{
    		return $this->view->fetch();

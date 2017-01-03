@@ -23,7 +23,7 @@
 <script>
 function import_data(addr){
 	
-    $.post('/admin/member/import', {file: addr}, function (data) {
+    $.post('/admin/info/import', {file: addr}, function (data) {
         if (data.code == 0) {
             parent.layer.msg(data.msg, {icon: 1, time: 3000});
             // 刷新

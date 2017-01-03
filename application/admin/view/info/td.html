@@ -1,7 +1,7 @@
 <td><input type="checkbox" name="id[]" value="{$vo.id}"></td>
 <td>{$vo.id}</td>
 <td>{$vo.username|high_light=$Request.param.username}</td>
-<td>{$vo.sex}</td>
-<td>{$vo.department_id}</td>
+<td><?php echo $vo['sex']==1?'男':'女';?></td>
+<td>{$vo.department_id|getDepartmentId}</td>
 <td>{$vo.position}</td>
 <td>{$vo.place_origin}</td>

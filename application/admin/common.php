@@ -506,3 +506,44 @@ function import_member($data){
 	}
 	return count($insert);
 }
+
+function import_admin_member($data){
+    $insert = array();
+    foreach ($data as $val){
+    	if($val['mobile'] && $val['idcard']){
+    		if($val['idcard']){
+    			$list = Db::name("AdminMember")->field('id')->where(array('idcard' => $val['idcard'],'status'=>0))->find();
+    			if($list){
+    				continue;
+    			}
+    		}
+    		if($val['mobile']){
+    			$list = Db::name("AdminMember")->field('id')->where(array('mobile'=>$val['mobile'],'status'=>0))->find();
+    			if($list){
+    				continue;
+    			}
+    		}
+            if($val['department_id']){
+                $list = Db::name("ViewAdminDepartment")->field('id')->where(array('title'=>$val['department_id'],'status'=>0))->find();
+                $val['department_id'] = $list['id'];
+            }
+    		unset($val['id']);
+    		$val['sex'] = $val['sex']=='男'?'1':'0';
+    		$val['marital_status'] = $val['marital_status']=='已婚'?'1':'0';
+    		$val['admin_id'] = UID;
+    		$val['add_time'] = time();
+    		$insert[] =$val;
+    	}
+    
+    
+    }
+    if($insert){
+    	Db::name ( "AdminMember" )->insertAll ( $insert );
+    }
+    return count($insert);
+}
+
+function getDepartmentId($id){
+    $dep = Db::name("ViewAdminDepartment")->field('title,id')->where('id='.$id)->find();
+    return $dep['title'];
+}
